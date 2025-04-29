@@ -18,7 +18,10 @@ createApp(App)
   .use(store)
   .use(router)
   .use(ElementPlus, { size: 'default', zIndex: 3000, locale: zhCn })
-  .component(ElCollapseTransition.name, ElCollapseTransition)
+  .component(
+    ElCollapseTransition.name ?? 'ElCollapseTransition',
+    ElCollapseTransition,
+  )
   .mount('#app');
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
