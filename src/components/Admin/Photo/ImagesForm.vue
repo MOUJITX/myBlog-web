@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import {defineProps} from "vue";
-const props = defineProps({
-
-})
+import { defineProps } from 'vue';
+const props = defineProps({});
 </script>
 
 <template>
   <div></div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

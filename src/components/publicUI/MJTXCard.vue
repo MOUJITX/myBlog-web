@@ -4,46 +4,56 @@ const props = defineProps({
   title: {
     type: String,
   },
-  padding:{
+  padding: {
     type: Boolean,
   },
-  minWidth:{
+  minWidth: {
     type: Number,
-    default: 0
+    default: 0,
   },
-  maxWidth:{
+  maxWidth: {
     type: Number,
-    default: 0
+    default: 0,
   },
-  background:{
+  background: {
     type: String,
   },
-  backgroundBlur:{
+  backgroundBlur: {
     type: Boolean,
-    default: false
+    default: false,
   },
-  zIndex:{
-    type: Number
-  }
-})
+  zIndex: {
+    type: Number,
+  },
+});
 
-const backgroundBlurFilter = 'blur(10px) contrast(50%)'
+const backgroundBlurFilter = 'blur(10px) contrast(50%)';
 </script>
 
 <template>
-  <div :class="props.padding ? 'mjtx-card mjtx-card-padding' : 'mjtx-card'"
-       :style="{'min-width':props.minWidth+'px',
-                'max-width':props.maxWidth>0 ? props.maxWidth+'px' : '',
-                'z-index':props.zIndex}"
-       v-if="!props.title">
-    <div class="mjtx-card-background"
-         :style="`background-image: url('${props.background}'); filter:${props.backgroundBlur ? backgroundBlurFilter : ''}`"
-         v-if="props.background"></div>
+  <div
+    :class="props.padding ? 'mjtx-card mjtx-card-padding' : 'mjtx-card'"
+    :style="{
+      'min-width': props.minWidth + 'px',
+      'max-width': props.maxWidth > 0 ? props.maxWidth + 'px' : '',
+      'z-index': props.zIndex,
+    }"
+    v-if="!props.title">
+    <div
+      class="mjtx-card-background"
+      :style="`background-image: url('${props.background}'); filter:${props.backgroundBlur ? backgroundBlurFilter : ''}`"
+      v-if="props.background"></div>
     <slot></slot>
   </div>
 
-  <MJTXCard :class="props.padding ? '' : 'mjtx-card-title-box'" v-else
-            :min-width="props.minWidth" :max-width="props.maxWidth" :background="props.background" :background-blur="props.backgroundBlur" :z-index="props.zIndex">
+  <MJTXCard
+    :class="props.padding ? '' : 'mjtx-card-title-box'"
+    v-else
+    :min-width="props.minWidth"
+    :max-width="props.maxWidth"
+    :background="props.background"
+    :background-blur="props.backgroundBlur"
+    :z-index="props.zIndex">
     <div class="mjtx-card-title">{{ props.title }}</div>
     <div :class="props.padding ? 'mjtx-card-padding' : ''">
       <slot></slot>
@@ -52,22 +62,22 @@ const backgroundBlurFilter = 'blur(10px) contrast(50%)'
 </template>
 
 <style scoped lang="scss">
-.mjtx-card{
+.mjtx-card {
   overflow: visible;
   margin: var(--card-margin);
   border-radius: var(--card-border-radius);
   box-shadow: var(--box-shadow);
   background-color: white;
-  &:hover{
+  &:hover {
     box-shadow: var(--box-shadow-hover);
   }
 
   position: relative;
 }
-.mjtx-card-padding{
+.mjtx-card-padding {
   padding: var(--card-padding);
 }
-.mjtx-card-background{
+.mjtx-card-background {
   position: absolute;
   top: -100px;
   left: -100px;
@@ -81,15 +91,13 @@ const backgroundBlurFilter = 'blur(10px) contrast(50%)'
   background-position-y: center;
 }
 
-
-.mjtx-card-title-box{
+.mjtx-card-title-box {
   padding-bottom: var(--card-padding);
 }
-.mjtx-card-title{
+.mjtx-card-title {
   font-size: var(--font-size-large);
   padding: var(--card-padding) var(--card-padding);
   border-bottom: 1px solid #ccc;
   font-weight: bold;
 }
-
 </style>

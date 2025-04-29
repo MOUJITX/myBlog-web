@@ -1,34 +1,34 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style lang="scss">
-:root{
+:root {
   //--root-background-color: white;
   --root-background-color: #f1f2f3;
 
   --max-width: 1280px;
-  --min-height:calc(100vh - 565px);
+  --min-height: calc(100vh - 565px);
 
-  --banner-height-home:700px;
-  --banner-height-page:400px;
+  --banner-height-home: 700px;
+  --banner-height-page: 400px;
 
-  --card-margin:10px;
-  --card-padding:20px;
-  --card-border-radius:5px;
+  --card-margin: 10px;
+  --card-padding: 20px;
+  --card-border-radius: 5px;
 
-  --box-shadow:#ccc 0 0 5px;
-  --box-shadow-hover:#333 0 0 5px;
+  --box-shadow: #ccc 0 0 5px;
+  --box-shadow-hover: #333 0 0 5px;
 
-  --font-size-small:12px;
-  --font-size-medium:16px;
-  --font-size-large:20px;
-  --font-size-xlarge:24px;
+  --font-size-small: 12px;
+  --font-size-medium: 16px;
+  --font-size-large: 20px;
+  --font-size-xlarge: 24px;
 
-  --color-black:#181818;
-  --color-whitegray:#F4F4F4;
-  --color-darkgray:#666;
-  --color-lightgrey:#999;
+  --color-black: #181818;
+  --color-whitegray: #f4f4f4;
+  --color-darkgray: #666;
+  --color-lightgrey: #999;
 
   --text-shadow: var(--color-black) 3px 3px 10px;
 
@@ -39,52 +39,51 @@
   --admin-navbar-menu-background-hover: #001528;
   --admin-navbar-text-color: #bfcbd9;
   --admin-navbar-text-color-hover: #ffd04b;
-
 }
 
-body{
+body {
   position: relative;
   background-color: var(--root-background-color);
 
-  .el-drawer__header{
+  .el-drawer__header {
     padding-bottom: 10px;
     //border-bottom: 1px solid #ccc;
   }
 
-  .el-upload--picture-card{
+  .el-upload--picture-card {
     width: 100px;
     height: 100px;
   }
 }
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
   width: 6px;
 }
-body::-webkit-scrollbar-thumb{
+body::-webkit-scrollbar-thumb {
   background-color: #ddd;
 }
 
-*{
-  margin:0;
+* {
+  margin: 0;
   padding: 0;
   //overflow-x: hidden;
   //overflow-y: hidden;
-  transition: all 0.2s;  //实现背景和文字渐变
-  -webkit-transition: all 0.2s;  //实现背景和文字渐变
+  transition: all 0.2s; //实现背景和文字渐变
+  -webkit-transition: all 0.2s; //实现背景和文字渐变
 
-  a{
+  a {
     text-decoration: none;
     color: inherit;
   }
 
-  tbody{
+  tbody {
     overflow-y: hidden;
 
-    .el-icon{
+    .el-icon {
       margin: 0 3px;
     }
   }
 
-  article{
+  article {
     line-height: 2;
     padding: 30px 50px;
     img {
@@ -103,42 +102,42 @@ body::-webkit-scrollbar-thumb{
       color: #ff502c;
       padding: 2px 5px;
       margin: 0 4px;
-      font-family: "Cascadia Mono", "Noto Sans SC", sans-serif;
+      font-family: 'Cascadia Mono', 'Noto Sans SC', sans-serif;
       white-space: break-spaces;
     }
 
-    blockquote{
+    blockquote {
       color: grey;
       margin: 10px 0 10px 20px;
       padding: 10px 10px 10px 15px;
       border-left: 3px solid #03a9f4;
-      background-color:#ecf7fe
+      background-color: #ecf7fe;
     }
 
-    a{
+    a {
       color: var(--el-color-primary);
-      &:before{
+      &:before {
         content: '🔗';
       }
-      &:hover{
+      &:hover {
         padding-bottom: 2px;
         border-bottom: 1px var(--el-color-primary) solid;
       }
     }
-    p{
+    p {
       margin: 5px 0;
     }
 
-    ul{
+    ul {
       margin: 16px 0;
       padding-left: 40px;
     }
-    ol{
+    ol {
       margin: 16px 0;
       padding-left: 40px;
     }
 
-    h1{
+    h1 {
       border-bottom: 1px solid #ccc;
       margin: 20px 0;
 
@@ -146,30 +145,22 @@ body::-webkit-scrollbar-thumb{
       //  content: '#';
       //}
     }
-    h2{
+    h2 {
       margin: 20px 0;
     }
-    h3{
+    h3 {
       margin: 20px 0;
     }
-    h4{
+    h4 {
       margin: 20px 0;
     }
-    h5{
+    h5 {
       margin: 20px 0;
     }
-    figcaption{
+    figcaption {
       font-size: 13px;
     }
   }
-
-
-
-
-
-
 }
 </style>
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>

@@ -1,45 +1,45 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import MJTXInline from "@/components/publicUI/MJTXInline.vue";
+import MJTXInline from '@/components/publicUI/MJTXInline.vue';
 const props = defineProps({
-  text:{
+  text: {
     type: String,
-    required: true
+    required: true,
   },
-  tip:{
-    type: String,
-  },
-  size:{
+  tip: {
     type: String,
   },
-  description:{
+  size: {
     type: String,
-  }
-})
+  },
+  description: {
+    type: String,
+  },
+});
 </script>
 
 <template>
   <MJTXInline position="baseline">
-    <div class="mjtx-textLine-text" :style="{'font-size':props.size}">
+    <div class="mjtx-textLine-text" :style="{ 'font-size': props.size }">
       {{ props.text }}
     </div>
-    <div class="mjtx-textLine-tip">{{props.tip}}</div>
+    <div class="mjtx-textLine-tip">{{ props.tip }}</div>
   </MJTXInline>
-  <div class="mjtx-textLine-description">{{props.description}}</div>
+  <div class="mjtx-textLine-description">{{ props.description }}</div>
 </template>
 
 <style scoped lang="scss">
-.mjtx-textLine-text{
+.mjtx-textLine-text {
   font-size: var(--font-size-medium);
   font-weight: bold;
-  font-family: "Heiti SC",serif;
+  font-family: 'Heiti SC', serif;
   color: var(--color-black);
   position: relative;
   z-index: 1;
   margin: 10px;
 
-  &:after{
-    content: "";
+  &:after {
+    content: '';
     width: 2em;
     height: 5px;
     border-radius: 190px;
@@ -50,11 +50,11 @@ const props = defineProps({
     z-index: -1;
   }
 }
-.mjtx-textLine-tip{
+.mjtx-textLine-tip {
   color: var(--color-lightgrey);
 }
 
-.mjtx-textLine-description{
+.mjtx-textLine-description {
   color: var(--color-lightgrey);
   margin: 10px;
 }

@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import NavigationBar from "@/components/Home/NavigationBar.vue";
-import BlogFooter from "@/components/Home/BlogFooter.vue";
-import {getWebsiteSetting} from "@/api/websiteSetting";
-import {onMounted, ref} from "vue";
-import WebNotice from "@/components/Home/WebNotice.vue";
-import WebLoading from "@/components/Home/WebLoading.vue";
+import NavigationBar from '@/components/Home/NavigationBar.vue';
+import BlogFooter from '@/components/Home/BlogFooter.vue';
+import { getWebsiteSetting } from '@/api/websiteSetting';
+import { onMounted, ref } from 'vue';
+import WebNotice from '@/components/Home/WebNotice.vue';
+import WebLoading from '@/components/Home/WebLoading.vue';
 
 onMounted(() => {
-  getWebsiteSetting().then((res) => {
+  getWebsiteSetting().then(res => {
     if (!res) return;
     Object.keys(res.data).forEach(key => {
-      if (key === 'func_enabled') isEnabled.value = res.data[key].value
+      if (key === 'func_enabled') isEnabled.value = res.data[key].value;
       if (key === 'web_navigate' || key === 'profile_concat')
-        localStorage.setItem(key, JSON.stringify(res.data[key].value))
-      else localStorage.setItem(key, res.data[key].value)
-    })
-    isLoading.value = false
-  })
-})
+        localStorage.setItem(key, JSON.stringify(res.data[key].value));
+      else localStorage.setItem(key, res.data[key].value);
+    });
+    isLoading.value = false;
+  });
+});
 
-const isLoading = ref<boolean>(true)
-const isEnabled = ref<boolean>(true)
+const isLoading = ref<boolean>(true);
+const isEnabled = ref<boolean>(true);
 </script>
 
 <template>
-  <WebLoading v-if="isLoading"/>
+  <WebLoading v-if="isLoading" />
   <WebNotice v-else-if="!isEnabled" />
   <div v-else>
-    <NavigationBar/>
-    <router-view/>
-    <BlogFooter/>
+    <NavigationBar />
+    <router-view />
+    <BlogFooter />
   </div>
 </template>
 

@@ -1,19 +1,19 @@
 <script setup>
-const content = document.querySelector("#content");
-const contentBlocks = document.querySelectorAll(".content-block");
-const navItems = document.querySelectorAll(".nav-item");
-const nav = document.querySelector("#nav");
+const content = document.querySelector('#content');
+const contentBlocks = document.querySelectorAll('.content-block');
+const navItems = document.querySelectorAll('.nav-item');
+const nav = document.querySelector('#nav');
 
 let timerId = null;
 let currentBlockIndex = 0;
-navItems[currentBlockIndex].classList.add("active");
+navItems[currentBlockIndex].classList.add('active');
 
 const handleScroll = function () {
   for (let i = 0; i < contentBlocks.length; i++) {
     const block = contentBlocks[i];
     if (
-        block.offsetTop <= content.scrollTop &&
-        block.offsetTop + block.offsetHeight > content.scrollTop
+      block.offsetTop <= content.scrollTop &&
+      block.offsetTop + block.offsetHeight > content.scrollTop
     ) {
       currentBlockIndex = i;
       break;
@@ -21,41 +21,41 @@ const handleScroll = function () {
   }
   for (let i = 0; i < navItems.length; i++) {
     const item = navItems[i];
-    item.classList.remove("active");
+    item.classList.remove('active');
   }
-  navItems[currentBlockIndex].classList.add("active");
+  navItems[currentBlockIndex].classList.add('active');
 };
 
-nav.addEventListener("click", (e) => {
+nav.addEventListener('click', e => {
   if (timerId) {
     window.clearInterval(timerId);
   }
-  content.removeEventListener("scroll", handleScroll);
+  content.removeEventListener('scroll', handleScroll);
   let lastScrollPosition = content.scrollTop;
 
   timerId = window.setInterval(() => {
     const currentScrollPosition = content.scrollTop;
     console.log(currentScrollPosition, lastScrollPosition);
     if (lastScrollPosition === currentScrollPosition) {
-      content.addEventListener("scroll", handleScroll);
+      content.addEventListener('scroll', handleScroll);
       window.clearInterval(timerId);
     }
     lastScrollPosition = currentScrollPosition;
   }, 150);
 
   navItems.forEach((item, index) => {
-    navItems[index].classList.remove("active");
+    navItems[index].classList.remove('active');
     if (e.target === item) {
-      navItems[index].classList.add("active");
+      navItems[index].classList.add('active');
       content.scrollTo({
         top: contentBlocks[index].offsetTop,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   });
 });
 
-content.addEventListener("scroll", handleScroll);
+content.addEventListener('scroll', handleScroll);
 </script>
 
 <template>

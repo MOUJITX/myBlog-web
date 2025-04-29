@@ -1,79 +1,91 @@
 <script lang="ts" setup>
-import {reactive, ref, defineEmits, defineProps, onMounted, PropType} from 'vue'
-import {ElNotification, FormInstance, FormRules} from 'element-plus'
-import {ICategory} from "@/api/types";
-import MJTXImageUpload from "@/components/publicUI/MJTXImageUpload.vue";
-import {defaultCategory, insetCategory, selectCategoryByID, updateCategory} from "@/api/category";
+import {
+  reactive,
+  ref,
+  defineEmits,
+  defineProps,
+  onMounted,
+  PropType,
+} from 'vue';
+import { ElNotification, FormInstance, FormRules } from 'element-plus';
+import { ICategory } from '@/api/types';
+import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+import {
+  defaultCategory,
+  insetCategory,
+  selectCategoryByID,
+  updateCategory,
+} from '@/api/category';
 
 const props = defineProps({
-  uuid:{
+  uuid: {
     type: String,
-    default: null
+    default: null,
   },
-  action:{
+  action: {
     type: String as PropType<'insert' | 'update' | 'copy'>,
     required: true,
   },
-  currentUUID:{
+  currentUUID: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const rules = reactive<FormRules<ICategory>>({
-  category:[
-    {required: true, message:'不允许为空', trigger: 'blur'}
-  ],
-  banner_image:[
-    {required: true, message:'不允许为空', trigger: 'blur'}
-  ]
-})
+  category: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+  banner_image: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+});
 
-const formRef = ref<FormInstance>()
-const categoryForm = ref<ICategory>({...defaultCategory})
+const formRef = ref<FormInstance>();
+const categoryForm = ref<ICategory>({ ...defaultCategory });
 
-onMounted(()=>{
+onMounted(() => {
   if (props.action !== 'insert') {
-    selectCategoryByID(props.uuid).then(res=>{
+    selectCategoryByID(props.uuid).then(res => {
       if (!res) {
-        emit('handle-close')
+        emit('handle-close');
         return;
       }
-      categoryForm.value = res.data
-    })
+      categoryForm.value = res.data;
+    });
   } else {
-    categoryForm.value.father_uuid = props.currentUUID
+    categoryForm.value.father_uuid = props.currentUUID;
   }
-})
+});
 
-const emit = defineEmits(['handle-close'])
+const emit = defineEmits(['handle-close']);
 const submitForm = async (formRef: FormInstance) => {
   await formRef.validate(valid => {
     if (valid) {
-      if (props.action === 'update'){
-        updateCategory(categoryForm.value).then(res=>{
+      if (props.action === 'update') {
+        updateCategory(categoryForm.value).then(res => {
           if (!res) return;
-          ElNotification.success({title: res.data})
-          emit('handle-close')
-        })
+          ElNotification.success({ title: res.data });
+          emit('handle-close');
+        });
       } else {
-        insetCategory(categoryForm.value).then(res=>{
+        insetCategory(categoryForm.value).then(res => {
           if (!res) return;
-          ElNotification.success({title: res.data})
-          emit('handle-close')
-        })
+          ElNotification.success({ title: res.data });
+          emit('handle-close');
+        });
       }
     }
-  })
-}
+  });
+};
 const resetForm = () => {
-  categoryForm.value = {...defaultCategory}
-}
-
+  categoryForm.value = { ...defaultCategory };
+};
 </script>
 
 <template>
-  <el-form ref="formRef" :model="categoryForm" :rules="rules" label-width="auto" status-icon>
+  <el-form
+    ref="formRef"
+    :model="categoryForm"
+    :rules="rules"
+    label-width="auto"
+    status-icon>
     <el-form-item label="栏目" prop="category">
       <el-input v-model="categoryForm.category" />
     </el-form-item>
@@ -90,6 +102,4 @@ const resetForm = () => {
   </el-form>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -22,11 +22,11 @@ export const getFilesPage = (pageNum: number, pageSize: number) =>
 export const getImagesPage = (
   pageNum: number,
   pageSize: number,
-  searchForm?: IFile
+  searchForm?: IFile,
 ) =>
   request.post(
     `/files/pageSelectImage?pageNum=${pageNum}&pageSize=${pageSize}`,
-    searchForm || {}
+    searchForm || {},
   );
 
 export const deleteFileAPI = (id: string) => request.delete(`/files/del/${id}`);

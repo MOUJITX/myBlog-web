@@ -1,12 +1,13 @@
 <script lang="ts" setup>
+import { isMobile } from '@/utils/isMobile';
+import { IWebsiteNavigation } from '@/api/types';
+import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
 
-import {isMobile} from "@/utils/isMobile";
-import {IWebsiteNavigation} from "@/api/types";
-import MJTXRouterLink from "@/components/publicUI/MJTXRouterLink.vue";
-
-const webName = localStorage.getItem("web_name")
-const isSearch = localStorage.getItem("func_search") === "true"
-const navigations: IWebsiteNavigation[] = JSON.parse(localStorage.getItem("web_navigate") || "[]")
+const webName = localStorage.getItem('web_name');
+const isSearch = localStorage.getItem('func_search') === 'true';
+const navigations: IWebsiteNavigation[] = JSON.parse(
+  localStorage.getItem('web_navigate') || '[]',
+);
 </script>
 
 <template>
@@ -14,9 +15,11 @@ const navigations: IWebsiteNavigation[] = JSON.parse(localStorage.getItem("web_n
     <div class="nav-left">
       <router-link to="/">{{ webName }}</router-link>
       <ul v-if="!isMobile()">
-        <div v-for="(item,index) in navigations" :key="index">
+        <div v-for="(item, index) in navigations" :key="index">
           <li v-if="item.nav_enabled">
-            <MJTXRouterLink :to="item.nav_url">{{ item.nav_name }}</MJTXRouterLink>
+            <MJTXRouterLink :to="item.nav_url">{{
+              item.nav_name
+            }}</MJTXRouterLink>
           </li>
         </div>
       </ul>

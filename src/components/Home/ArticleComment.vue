@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import MJTXCard from "@/components/publicUI/MJTXCard.vue";
+import MJTXCard from '@/components/publicUI/MJTXCard.vue';
 </script>
 
 <template>
@@ -8,7 +7,7 @@ import MJTXCard from "@/components/publicUI/MJTXCard.vue";
 </template>
 
 <style scoped lang="scss">
-.article-comment{
+.article-comment {
   margin-top: 20px;
   min-height: 200px;
 }

@@ -1,20 +1,22 @@
 <script setup lang="ts">
-
-import MJTXCard from "@/components/publicUI/MJTXCard.vue";
-import {defineProps} from "vue";
-import {IArticleMenu} from "@/api/types";
+import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+import { defineProps } from 'vue';
+import { IArticleMenu } from '@/api/types';
 
 const props = defineProps<{
-  menu: IArticleMenu[]
-}>()
+  menu: IArticleMenu[];
+}>();
 </script>
 
 <template>
   <MJTXCard title="目录">
     <el-scrollbar max-height="500px">
-      <div v-for="(item,index) in props.menu" :key="index" class="article-menu" >
+      <div
+        v-for="(item, index) in props.menu"
+        :key="index"
+        class="article-menu">
         <a :href="`#${item.elementID}`">
-          <li :style="`padding-left:${(item.level-1) * 20 + 15}px`">
+          <li :style="`padding-left:${(item.level - 1) * 20 + 15}px`">
             {{ item.title }}
           </li>
         </a>
