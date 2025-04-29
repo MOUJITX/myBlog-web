@@ -6,10 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prettier": "prettier --list-different --write 'src/**/*.{ts,tsx,json,vue}'"
+    "prettier": "prettier --list-different --write 'src/**/*.{ts,tsx,json,vue}'",
+    "release": "release-it",
+    "rab": "yarn release && yarn build"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@tinymce/tinymce-vue": "^5.1.1",
     "@types/lodash": "^4.14.74",
     "@wangeditor/editor": "^5.1.23",
@@ -20,6 +23,7 @@
     "moment": "^2.30.1",
     "prettier": "^3.5.3",
     "prismjs": "^1.29.0",
+    "release-it": "^19.0.1",
     "sortablejs": "^1.15.2",
     "tinymce": "^6.8.2",
     "tinymce-plugin": "^0.0.5-bate.4",
