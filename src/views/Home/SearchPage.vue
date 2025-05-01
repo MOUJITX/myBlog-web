@@ -7,8 +7,8 @@
   import { IArticle } from '@/api/types';
   import { defaultSearchArticle, getArticlesList } from '@/api/article';
   import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import MJTXError from '@/components/publicUI/MJTXError.vue';
   import { random } from 'lodash';
-  import ArticleSearch from '@/components/Home/ArticleSearch.vue';
 
   const route = useRoute();
   const searchInput = ref('');
@@ -52,33 +52,39 @@
     localStorage.getItem('web_banner') || '[]'
   ).split(',');
   const rand = random(web_banner.length - 1, false);
+
+  const isSearch = localStorage.getItem('func_search') === 'true';
 </script>
 
 <template>
-  <BannerBox
-    type="page"
-    :title="searchInput"
-    :banner-image="web_banner[rand]"
-    sub-title="搜索结果" />
-  <div class="list" v-if="dataList.length > 0">
-    <ArticleCard
-      v-for="(item, index) in dataList"
-      :article="item"
-      :key="index" />
-    <MJTXPagination
-      position="center"
-      layout="prev, pager, next"
-      v-model:current-page="listQuery.currentPage"
-      v-model:page-size="listQuery.pagesize"
-      :total="total"
-      @handleChange="getDataList()" />
-  </div>
-  <div v-else class="list">
-    <div class="list-empty"></div>
-    <div class="list-empty-text">
-      <div>似乎没有找到内容？换个词试试</div>
-      <ArticleSearch />
+  <div v-if="isSearch">
+    <BannerBox
+      type="page"
+      :title="searchInput"
+      :banner-image="web_banner[rand]"
+      sub-title="搜索结果" />
+    <div class="list" v-if="dataList.length > 0">
+      <ArticleCard
+        v-for="(item, index) in dataList"
+        :article="item"
+        :key="index" />
+      <MJTXPagination
+        position="center"
+        layout="prev, pager, next"
+        v-model:current-page="listQuery.currentPage"
+        v-model:page-size="listQuery.pagesize"
+        :total="total"
+        @handleChange="getDataList()" />
     </div>
+    <MJTXError
+      v-else
+      text="似乎没有找到内容？换个关键词试试"
+      type="empty"
+      showSearch />
+  </div>
+  <div v-else>
+    <BannerBox type="page" :banner-image="web_banner[rand]" />
+    <MJTXError text="页面未找到" type="notFound" />
   </div>
 </template>
 
@@ -87,21 +93,5 @@
     max-width: var(--max-width);
     min-height: var(--min-height);
     margin: 20px auto;
-  }
-  .list-empty {
-    background-image: url('../../assets/empty.svg');
-    width: 100%;
-    height: 300px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .list-empty-text {
-    display: flex;
-    font-size: 20px;
-    color: #999;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
   }
 </style>

@@ -13,6 +13,7 @@
   import MJTXTag from '@/components/publicUI/MJTXTag.vue';
   import MJTXInline from '@/components/publicUI/MJTXInline.vue';
   import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
+  import MJTXError from '@/components/publicUI/MJTXError.vue';
 
   const route = useRoute();
   const articleUUID = route.params.uuid as string;
@@ -44,37 +45,39 @@
     :title="articleData.title!"
     :banner-image="articleData.image_url"
     blur>
-    <MJTXInline>
-      <router-link
-        v-for="(item, index) in articleData.categories_name"
-        :key="index"
-        :to="`/list/category/${articleData.categories?.[index]}`">
-        <MJTXTag :tag="item" size="14px" round />
-      </router-link>
-      <router-link
-        v-for="(item, index) in articleData.tags_name"
-        :key="index"
-        :to="`/list/tag/${articleData.tags?.[index]}`">
-        <MJTXTag :tag="item" size="14px" round before theme="none" shadow />
-      </router-link>
-    </MJTXInline>
-    <h1 class="article-banner_title">{{ articleData.title }}</h1>
-    <MJTXInline position="center">
-      <div class="article-banner_icon article-banner_author"></div>
-      <MJTXTag
-        tag="原创"
-        size="14px"
-        :round="false"
-        v-if="articleData.is_original" />
-      <MJTXRouterLink :to="articleData.source_url!" v-else>
-        <MJTXTag tag="转载" size="14px" :round="false" />
-      </MJTXRouterLink>
-      <span class="article-banner_tip">{{ articleData.author }}</span>
-      <div class="article-banner_icon article-banner_date" />
-      <span class="article-banner_tip">{{
-        articleData.create_time!.substring(0, 10)
-      }}</span>
-    </MJTXInline>
+    <div v-if="articleData.is_public">
+      <MJTXInline>
+        <router-link
+          v-for="(item, index) in articleData.categories_name"
+          :key="index"
+          :to="`/list/category/${articleData.categories?.[index]}`">
+          <MJTXTag :tag="item" size="14px" round />
+        </router-link>
+        <router-link
+          v-for="(item, index) in articleData.tags_name"
+          :key="index"
+          :to="`/list/tag/${articleData.tags?.[index]}`">
+          <MJTXTag :tag="item" size="14px" round before theme="none" shadow />
+        </router-link>
+      </MJTXInline>
+      <h1 class="article-banner_title">{{ articleData.title }}</h1>
+      <MJTXInline position="center">
+        <div class="article-banner_icon article-banner_author"></div>
+        <MJTXTag
+          tag="原创"
+          size="14px"
+          :round="false"
+          v-if="articleData.is_original" />
+        <MJTXRouterLink :to="articleData.source_url!" v-else>
+          <MJTXTag tag="转载" size="14px" :round="false" />
+        </MJTXRouterLink>
+        <span class="article-banner_tip">{{ articleData.author }}</span>
+        <div class="article-banner_icon article-banner_date" />
+        <span class="article-banner_tip">{{
+          articleData.create_time!.substring(0, 10)
+        }}</span>
+      </MJTXInline>
+    </div>
   </BannerBox>
   <div class="article" v-if="articleData.is_public">
     <div :style="`width:${showMenu && !isMobile() ? '70%' : '100%'}`">
@@ -85,9 +88,7 @@
       <ArticleMenu :menu="articleMenu" />
     </MJTXAffix>
   </div>
-  <div class="article" v-else>
-    <div class="article-notFound"></div>
-  </div>
+  <MJTXError text="页面未找到" type="notFound" v-else />
 </template>
 
 <style scoped lang="scss">
@@ -128,13 +129,5 @@
     padding-top: 10px;
     padding-bottom: 20px;
     text-shadow: var(--text-shadow);
-  }
-
-  .article-notFound {
-    background-image: url('../../assets/404.svg');
-    width: 100%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
   }
 </style>

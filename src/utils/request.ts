@@ -39,9 +39,9 @@ service.interceptors.response.use(
     return res;
   },
   error => {
+    console.error('Service Request Error', error.response);
     ElNotification({
-      title: 'ERROR ' + error.response,
-      message: error.response,
+      title: 'Service Request Error',
       type: 'error',
       duration: 5 * 1000,
       zIndex: 99999,
