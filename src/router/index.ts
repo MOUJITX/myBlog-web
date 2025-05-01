@@ -24,6 +24,7 @@ import AdminImagePage from '@/views/Admin/ImagePage.vue';
 import AdminUIPage from '@/views/Admin/UIPage.vue';
 import LoginPage from '@/views/Admin/LoginPage.vue';
 import EditPage from '@/views/Admin/EditPage.vue';
+import SearchPage from '@/views/Home/SearchPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -41,6 +42,7 @@ const routes: Array<RouteRecordRaw> = [
       { path: 'photo/:uuid', name: 'photo', component: PhotoPage },
       // {path: 'test', name: 'test', component: TestPage},
       { path: 'list/:type/:title', name: 'list', component: ListPage },
+      { path: 'search/:search', name: 'search', component: SearchPage },
     ],
   },
   { path: '/admin/login', name: 'AdminLogin', component: LoginPage },

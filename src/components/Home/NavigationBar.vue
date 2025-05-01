@@ -2,6 +2,7 @@
   import { isMobile } from '@/utils/isMobile';
   import { IWebsiteNavigation } from '@/api/types';
   import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
+  import ArticleSearch from './ArticleSearch.vue';
 
   const webName = localStorage.getItem('web_name');
   const isSearch = localStorage.getItem('func_search') === 'true';
@@ -25,7 +26,7 @@
       </ul>
     </div>
     <div class="nav-right">
-      <div v-if="!isMobile() && isSearch" class='nav-search'>search</div>
+      <ArticleSearch v-if="!isMobile() && isSearch" />
       <div v-if="isMobile()">menu</div>
     </div>
   </div>
@@ -95,9 +96,5 @@
     a {
       color: var(--color-black);
     }
-  }
-
-  .nav-search {
-    border: 1px solid white;
   }
 </style>
