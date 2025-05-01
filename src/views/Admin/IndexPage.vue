@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import InfoCard from '@/components/Home/InfoCard.vue';
+  import InfoCard from '@/components/Home/InfoCard.vue';
 </script>
 
 <template>
@@ -12,9 +12,9 @@ import InfoCard from '@/components/Home/InfoCard.vue';
 </template>
 
 <style scoped lang="scss">
-.admin-index-container {
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: space-around;
-}
+  .admin-index-container {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-around;
+  }
 </style>

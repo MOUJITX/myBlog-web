@@ -1,41 +1,41 @@
 <script setup lang="ts">
-import { defineEmits, defineModel, onMounted } from 'vue';
-import { IWebsiteNavigation } from '@/api/types';
-import { Minus, Plus } from '@element-plus/icons-vue';
-import { defaultWebsiteNavigation } from '@/api/websiteSetting';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import { defineEmits, defineModel, onMounted } from 'vue';
+  import { IWebsiteNavigation } from '@/api/types';
+  import { Minus, Plus } from '@element-plus/icons-vue';
+  import { defaultWebsiteNavigation } from '@/api/websiteSetting';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
 
-const tableData = defineModel<IWebsiteNavigation[]>({ default: [] });
+  const tableData = defineModel<IWebsiteNavigation[]>({ default: [] });
 
-const emit = defineEmits(['change']);
-const dataEdit = () => {
-  console.log('cc');
-  emit('change');
-};
+  const emit = defineEmits(['change']);
+  const dataEdit = () => {
+    console.log('cc');
+    emit('change');
+  };
 
-const dataAdd = (index: number) => {
-  tableData.value.splice(index + 1, 0, defaultWebsiteNavigation);
-  dataEdit();
-};
-
-const dataDel = (index: number) => {
-  tableData.value.splice(index, 1);
-  dataEdit();
-};
-
-onMounted(() => {
-  if (tableData.value.length === 0) {
-    tableData.value.push({
-      nav_name: '首页',
-      nav_title: '首页',
-      nav_subtitle: '',
-      nav_url: '/',
-      nav_enabled: true,
-      nav_banner: [],
-    });
+  const dataAdd = (index: number) => {
+    tableData.value.splice(index + 1, 0, defaultWebsiteNavigation);
     dataEdit();
-  }
-});
+  };
+
+  const dataDel = (index: number) => {
+    tableData.value.splice(index, 1);
+    dataEdit();
+  };
+
+  onMounted(() => {
+    if (tableData.value.length === 0) {
+      tableData.value.push({
+        nav_name: '首页',
+        nav_title: '首页',
+        nav_subtitle: '',
+        nav_url: '/',
+        nav_enabled: true,
+        nav_banner: [],
+      });
+      dataEdit();
+    }
+  });
 </script>
 
 <template>

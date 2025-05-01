@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import { defineProps } from 'vue';
-import { IArticleMenu } from '@/api/types';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import { defineProps } from 'vue';
+  import { IArticleMenu } from '@/api/types';
 
-const props = defineProps<{
-  menu: IArticleMenu[];
-}>();
+  const props = defineProps<{
+    menu: IArticleMenu[];
+  }>();
 </script>
 
 <template>
@@ -25,20 +25,20 @@ const props = defineProps<{
   </MJTXCard>
 </template>
 <style scoped lang="scss">
-.article-menu {
-  li {
-    list-style: none;
-    line-height: 2;
-    cursor: pointer;
-    font-size: 15px;
-    text-align: justify;
-    color: var(--color-black);
-    padding-right: 15px;
-    margin: 5px 0;
-    &:hover {
-      color: var(--el-color-primary);
-      background-color: var(--color-whitegray);
+  .article-menu {
+    li {
+      list-style: none;
+      line-height: 2;
+      cursor: pointer;
+      font-size: 15px;
+      text-align: justify;
+      color: var(--color-black);
+      padding-right: 15px;
+      margin: 5px 0;
+      &:hover {
+        color: var(--el-color-primary);
+        background-color: var(--color-whitegray);
+      }
     }
   }
-}
 </style>

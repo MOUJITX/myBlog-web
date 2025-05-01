@@ -1,51 +1,51 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import { onMounted, ref } from 'vue';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
-import { ITag } from '@/api/types';
-import { deleteTagsAPI, deleteTagAPI, getTagsPage } from '@/api/tag';
-import { QuestionFilled } from '@element-plus/icons-vue';
-import TagPopup from '@/components/Admin/Tag/TagPopup.vue';
-import { ElNotification } from 'element-plus';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import { onMounted, ref } from 'vue';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import { ITag } from '@/api/types';
+  import { deleteTagsAPI, deleteTagAPI, getTagsPage } from '@/api/tag';
+  import { QuestionFilled } from '@element-plus/icons-vue';
+  import TagPopup from '@/components/Admin/Tag/TagPopup.vue';
+  import { ElNotification } from 'element-plus';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
 
-const tableData = ref<ITag[]>([]);
-const listQuery = ref({ currentPage: 1, pagesize: 10 });
-const total = ref(10);
+  const tableData = ref<ITag[]>([]);
+  const listQuery = ref({ currentPage: 1, pagesize: 10 });
+  const total = ref(10);
 
-const getDataList = () => {
-  getTagsPage(listQuery.value.currentPage, listQuery.value.pagesize).then(
-    res => {
-      if (!res) return;
-      tableData.value = res.data.list;
-      total.value = res.data.total;
-    },
-  );
-};
+  const getDataList = () => {
+    getTagsPage(listQuery.value.currentPage, listQuery.value.pagesize).then(
+      res => {
+        if (!res) return;
+        tableData.value = res.data.list;
+        total.value = res.data.total;
+      },
+    );
+  };
 
-const deleteSingle = (id: string) => {
-  deleteTagAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
+  const deleteSingle = (id: string) => {
+    deleteTagAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const deleteBatch = () => {
+    deleteTagsAPI(uuids.value).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const uuids = ref<string[]>([]);
+  const tableRowSelect = (selected: ITag[]) => {
+    uuids.value = selected.map((item: ITag) => item.uuid);
+  };
+
+  onMounted(() => {
     getDataList();
+    uuids.value = [];
   });
-};
-
-const deleteBatch = () => {
-  deleteTagsAPI(uuids.value).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    getDataList();
-  });
-};
-
-const uuids = ref<string[]>([]);
-const tableRowSelect = (selected: ITag[]) => {
-  uuids.value = selected.map((item: ITag) => item.uuid);
-};
-
-onMounted(() => {
-  getDataList();
-  uuids.value = [];
-});
 </script>
 
 <template>

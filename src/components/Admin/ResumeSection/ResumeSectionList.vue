@@ -1,47 +1,47 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import { ElNotification } from 'element-plus';
-import { onMounted, ref } from 'vue';
-import { IResumeSection } from '@/api/types';
-import {
-  deleteResumeSectionAPI,
-  deleteResumeSectionsAPI,
-  getResumeSections,
-} from '@/api/resumeSection';
-import ResumeSectionPopup from '@/components/Admin/ResumeSection/ResumeSectionPopup.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import { ElNotification } from 'element-plus';
+  import { onMounted, ref } from 'vue';
+  import { IResumeSection } from '@/api/types';
+  import {
+    deleteResumeSectionAPI,
+    deleteResumeSectionsAPI,
+    getResumeSections,
+  } from '@/api/resumeSection';
+  import ResumeSectionPopup from '@/components/Admin/ResumeSection/ResumeSectionPopup.vue';
 
-const tableData = ref<IResumeSection[]>([]);
+  const tableData = ref<IResumeSection[]>([]);
 
-const getDataList = () => {
-  getResumeSections().then(res => {
-    if (!res) return;
-    tableData.value = res.data;
-  });
-};
+  const getDataList = () => {
+    getResumeSections().then(res => {
+      if (!res) return;
+      tableData.value = res.data;
+    });
+  };
 
-const deleteSingle = (id: string) => {
-  deleteResumeSectionAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
+  const deleteSingle = (id: string) => {
+    deleteResumeSectionAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const deleteBatch = () => {
+    deleteResumeSectionsAPI(uuids.value).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const uuids = ref<string[]>([]);
+  const tableRowSelect = (selected: IResumeSection[]) => {
+    uuids.value = selected.map((item: IResumeSection) => item.uuid);
+  };
+
+  onMounted(() => {
     getDataList();
+    uuids.value = [];
   });
-};
-
-const deleteBatch = () => {
-  deleteResumeSectionsAPI(uuids.value).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    getDataList();
-  });
-};
-
-const uuids = ref<string[]>([]);
-const tableRowSelect = (selected: IResumeSection[]) => {
-  uuids.value = selected.map((item: IResumeSection) => item.uuid);
-};
-
-onMounted(() => {
-  getDataList();
-  uuids.value = [];
-});
 </script>
 
 <template>

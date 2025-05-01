@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const webName = localStorage.getItem('web_name');
-const web_police = localStorage.getItem('web_police');
-const web_icp = localStorage.getItem('web_icp');
+  const webName = localStorage.getItem('web_name');
+  const web_police = localStorage.getItem('web_police');
+  const web_icp = localStorage.getItem('web_icp');
 </script>
 
 <template>
@@ -27,16 +27,16 @@ const web_icp = localStorage.getItem('web_icp');
 </template>
 
 <style scoped lang="scss">
-footer {
-  width: 100%;
-  height: 100px;
-  background-color: #333;
-  color: white;
-  line-height: 25px;
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
+  footer {
+    width: 100%;
+    height: 100px;
+    background-color: #333;
+    color: white;
+    line-height: 25px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
 </style>

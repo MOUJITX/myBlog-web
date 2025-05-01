@@ -1,76 +1,76 @@
 <script lang="ts" setup>
-import {
-  reactive,
-  ref,
-  defineEmits,
-  defineProps,
-  onMounted,
-  PropType,
-} from 'vue';
-import { ElNotification, FormInstance, FormRules } from 'element-plus';
-import { IResumeSection } from '@/api/types';
-import {
-  defaultResumeSection,
-  insetResumeSection,
-  selectResumeSectionByID,
-  updateResumeSection,
-} from '@/api/resumeSection';
+  import {
+    reactive,
+    ref,
+    defineEmits,
+    defineProps,
+    onMounted,
+    PropType,
+  } from 'vue';
+  import { ElNotification, FormInstance, FormRules } from 'element-plus';
+  import { IResumeSection } from '@/api/types';
+  import {
+    defaultResumeSection,
+    insetResumeSection,
+    selectResumeSectionByID,
+    updateResumeSection,
+  } from '@/api/resumeSection';
 
-const props = defineProps({
-  uuid: {
-    type: String,
-    default: null,
-  },
-  action: {
-    type: String as PropType<'insert' | 'update' | 'copy'>,
-    required: true,
-  },
-});
+  const props = defineProps({
+    uuid: {
+      type: String,
+      default: null,
+    },
+    action: {
+      type: String as PropType<'insert' | 'update' | 'copy'>,
+      required: true,
+    },
+  });
 
-const rules = reactive<FormRules<IResumeSection>>({
-  ordernum: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  section: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  description: [{ required: false, message: '不允许为空', trigger: 'blur' }],
-});
+  const rules = reactive<FormRules<IResumeSection>>({
+    ordernum: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    section: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    description: [{ required: false, message: '不允许为空', trigger: 'blur' }],
+  });
 
-const formRef = ref<FormInstance>();
-const resumeSectionForm = ref<IResumeSection>({ ...defaultResumeSection });
+  const formRef = ref<FormInstance>();
+  const resumeSectionForm = ref<IResumeSection>({ ...defaultResumeSection });
 
-onMounted(() => {
-  if (props.action !== 'insert') {
-    selectResumeSectionByID(props.uuid).then(res => {
-      if (!res) {
-        emit('handle-close');
-        return;
-      }
-      resumeSectionForm.value = res.data;
-    });
-  }
-});
-
-const emit = defineEmits(['handle-close']);
-const submitForm = async (formRef: FormInstance) => {
-  await formRef.validate(valid => {
-    if (valid) {
-      if (props.action === 'update') {
-        updateResumeSection(resumeSectionForm.value).then(res => {
-          if (!res) return;
-          ElNotification.success({ title: res.data });
+  onMounted(() => {
+    if (props.action !== 'insert') {
+      selectResumeSectionByID(props.uuid).then(res => {
+        if (!res) {
           emit('handle-close');
-        });
-      } else {
-        insetResumeSection(resumeSectionForm.value).then(res => {
-          if (!res) return;
-          ElNotification.success({ title: res.data });
-          emit('handle-close');
-        });
-      }
+          return;
+        }
+        resumeSectionForm.value = res.data;
+      });
     }
   });
-};
-const resetForm = () => {
-  resumeSectionForm.value = { ...defaultResumeSection };
-};
+
+  const emit = defineEmits(['handle-close']);
+  const submitForm = async (formRef: FormInstance) => {
+    await formRef.validate(valid => {
+      if (valid) {
+        if (props.action === 'update') {
+          updateResumeSection(resumeSectionForm.value).then(res => {
+            if (!res) return;
+            ElNotification.success({ title: res.data });
+            emit('handle-close');
+          });
+        } else {
+          insetResumeSection(resumeSectionForm.value).then(res => {
+            if (!res) return;
+            ElNotification.success({ title: res.data });
+            emit('handle-close');
+          });
+        }
+      }
+    });
+  };
+  const resetForm = () => {
+    resumeSectionForm.value = { ...defaultResumeSection };
+  };
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const func_notice = localStorage.getItem('func_notice');
+  const func_notice = localStorage.getItem('func_notice');
 </script>
 
 <template>

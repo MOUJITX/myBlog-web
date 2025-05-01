@@ -1,41 +1,41 @@
 <script setup lang="ts">
-import BannerBox from '@/components/Home/BannerBox.vue';
-import ArticleContent from '@/components/Home/ArticleContent.vue';
-import ArticleComment from '@/components/Home/ArticleComment.vue';
-import ArticleMenu from '@/components/Home/ArticleMenu.vue';
-import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
-import { IArticle, IArticleMenu } from '@/api/types';
-import { defaultArticle, getArticleByUUID } from '@/api/article';
-import extractTitles from '@/utils/extractTitles';
-import { isMobile } from '@/utils/isMobile';
-import MJTXAffix from '@/components/publicUI/MJTXAffix.vue';
-import MJTXTag from '@/components/publicUI/MJTXTag.vue';
-import MJTXInline from '@/components/publicUI/MJTXInline.vue';
-import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
+  import BannerBox from '@/components/Home/BannerBox.vue';
+  import ArticleContent from '@/components/Home/ArticleContent.vue';
+  import ArticleComment from '@/components/Home/ArticleComment.vue';
+  import ArticleMenu from '@/components/Home/ArticleMenu.vue';
+  import { useRoute } from 'vue-router';
+  import { onMounted, ref } from 'vue';
+  import { IArticle, IArticleMenu } from '@/api/types';
+  import { defaultArticle, getArticleByUUID } from '@/api/article';
+  import extractTitles from '@/utils/extractTitles';
+  import { isMobile } from '@/utils/isMobile';
+  import MJTXAffix from '@/components/publicUI/MJTXAffix.vue';
+  import MJTXTag from '@/components/publicUI/MJTXTag.vue';
+  import MJTXInline from '@/components/publicUI/MJTXInline.vue';
+  import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
 
-const route = useRoute();
-const articleUUID = route.params.uuid as string;
+  const route = useRoute();
+  const articleUUID = route.params.uuid as string;
 
-const articleData = ref<IArticle>({ ...defaultArticle });
-const articleMenu = ref<IArticleMenu[]>([]);
-const showMenu = ref(true);
+  const articleData = ref<IArticle>({ ...defaultArticle });
+  const articleMenu = ref<IArticleMenu[]>([]);
+  const showMenu = ref(true);
 
-const getDate = () => {
-  getArticleByUUID(articleUUID).then(res => {
-    if (!res) return;
-    articleData.value = res.data;
-    articleMenu.value = extractTitles(res.data.full_content);
-    console.log(articleMenu.value);
-    if (articleMenu.value.length === 0) showMenu.value = false;
+  const getDate = () => {
+    getArticleByUUID(articleUUID).then(res => {
+      if (!res) return;
+      articleData.value = res.data;
+      articleMenu.value = extractTitles(res.data.full_content);
+      console.log(articleMenu.value);
+      if (articleMenu.value.length === 0) showMenu.value = false;
+    });
+  };
+
+  onMounted(() => {
+    getDate();
   });
-};
 
-onMounted(() => {
-  getDate();
-});
-
-const func_comment = localStorage.getItem('func_comment') === 'true';
+  const func_comment = localStorage.getItem('func_comment') === 'true';
 </script>
 
 <template>
@@ -91,50 +91,50 @@ const func_comment = localStorage.getItem('func_comment') === 'true';
 </template>
 
 <style scoped lang="scss">
-.article {
-  max-width: var(--max-width);
-  min-height: var(--min-height);
-  margin: 20px auto;
+  .article {
+    max-width: var(--max-width);
+    min-height: var(--min-height);
+    margin: 20px auto;
 
-  display: flex;
-  justify-content: space-between;
-}
-.article-menu {
-  width: 30%;
-}
+    display: flex;
+    justify-content: space-between;
+  }
+  .article-menu {
+    width: 30%;
+  }
 
-.article-banner_tip {
-  font-size: 15px;
-  margin-right: 20px;
-  text-shadow: var(--text-shadow);
-}
+  .article-banner_tip {
+    font-size: 15px;
+    margin-right: 20px;
+    text-shadow: var(--text-shadow);
+  }
 
-.article-banner_icon {
-  background-size: contain;
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
-}
+  .article-banner_icon {
+    background-size: contain;
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
 
-.article-banner_author {
-  background-image: url('../../assets/author.svg');
-}
+  .article-banner_author {
+    background-image: url('../../assets/author.svg');
+  }
 
-.article-banner_date {
-  background-image: url('../../assets/time.svg');
-}
+  .article-banner_date {
+    background-image: url('../../assets/time.svg');
+  }
 
-.article-banner_title {
-  padding-top: 10px;
-  padding-bottom: 20px;
-  text-shadow: var(--text-shadow);
-}
+  .article-banner_title {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    text-shadow: var(--text-shadow);
+  }
 
-.article-notFound {
-  background-image: url('../../assets/404.svg');
-  width: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
+  .article-notFound {
+    background-image: url('../../assets/404.svg');
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 </style>

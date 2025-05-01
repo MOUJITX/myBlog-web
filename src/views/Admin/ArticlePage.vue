@@ -1,100 +1,100 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import { ref, onMounted } from 'vue';
-import { IArticle, ICategory } from '@/api/types';
-import { deleteCategoryAPI, getCategories } from '@/api/category';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
-import {
-  Comment,
-  Flag,
-  Link,
-  Lock,
-  QuestionFilled,
-  Star,
-} from '@element-plus/icons-vue';
-import CategoryPopup from '@/components/Admin/Category/CategoryPopup.vue';
-import { ElNotification } from 'element-plus';
-import {
-  defaultArticle,
-  deleteArticleAPI,
-  deleteArticlesAPI,
-  getArticlesPage,
-} from '@/api/article';
-import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
-import generateUUID from '@/utils/generateUUID';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import { ref, onMounted } from 'vue';
+  import { IArticle, ICategory } from '@/api/types';
+  import { deleteCategoryAPI, getCategories } from '@/api/category';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import {
+    Comment,
+    Flag,
+    Link,
+    Lock,
+    QuestionFilled,
+    Star,
+  } from '@element-plus/icons-vue';
+  import CategoryPopup from '@/components/Admin/Category/CategoryPopup.vue';
+  import { ElNotification } from 'element-plus';
+  import {
+    defaultArticle,
+    deleteArticleAPI,
+    deleteArticlesAPI,
+    getArticlesPage,
+  } from '@/api/article';
+  import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
+  import generateUUID from '@/utils/generateUUID';
 
-const tree = ref<ICategory[]>();
-const listQuery = ref({ currentPage: 1, pagesize: 10 });
-const total = ref(10);
-const tableData = ref<IArticle[]>([]);
+  const tree = ref<ICategory[]>();
+  const listQuery = ref({ currentPage: 1, pagesize: 10 });
+  const total = ref(10);
+  const tableData = ref<IArticle[]>([]);
 
-const searchForm = ref<IArticle>({ ...defaultArticle });
+  const searchForm = ref<IArticle>({ ...defaultArticle });
 
-const getTree = () => {
-  getCategories().then(res => {
-    if (!res) return;
-    tree.value = res.data;
-  });
-};
+  const getTree = () => {
+    getCategories().then(res => {
+      if (!res) return;
+      tree.value = res.data;
+    });
+  };
 
-const handleNodeClick = (data: ICategory) => {
-  searchForm.value.categories = [data.uuid];
-  listQuery.value.currentPage = 1;
-  getDataList();
-};
+  const handleNodeClick = (data: ICategory) => {
+    searchForm.value.categories = [data.uuid];
+    listQuery.value.currentPage = 1;
+    getDataList();
+  };
 
-const reload = () => {
-  getDataList();
-  getTree();
-};
+  const reload = () => {
+    getDataList();
+    getTree();
+  };
 
-const uuids = ref<string[]>([]);
-const tableRowSelect = (selected: IArticle[]) => {
-  uuids.value = selected.map((item: IArticle) => item.uuid);
-};
+  const uuids = ref<string[]>([]);
+  const tableRowSelect = (selected: IArticle[]) => {
+    uuids.value = selected.map((item: IArticle) => item.uuid);
+  };
 
-onMounted(() => {
-  reload();
-  uuids.value = [];
-});
-
-const deleteSingle = (id: string) => {
-  deleteArticleAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
+  onMounted(() => {
     reload();
+    uuids.value = [];
   });
-};
 
-const deleteBatch = () => {
-  deleteArticlesAPI(uuids.value).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    reload();
-  });
-};
+  const deleteSingle = (id: string) => {
+    deleteArticleAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      reload();
+    });
+  };
 
-const getDataList = () => {
-  getArticlesPage(
-    listQuery.value.currentPage,
-    listQuery.value.pagesize,
-    searchForm.value,
-  ).then(res => {
-    if (!res) return;
-    tableData.value = res.data.list;
-    total.value = res.data.total;
-  });
-};
+  const deleteBatch = () => {
+    deleteArticlesAPI(uuids.value).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      reload();
+    });
+  };
 
-const deleteCategorySingle = (id: string) => {
-  deleteCategoryAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    searchForm.value.categories = [''];
-    reload();
-  });
-};
+  const getDataList = () => {
+    getArticlesPage(
+      listQuery.value.currentPage,
+      listQuery.value.pagesize,
+      searchForm.value,
+    ).then(res => {
+      if (!res) return;
+      tableData.value = res.data.list;
+      total.value = res.data.total;
+    });
+  };
 
-// const editArticleInfo = (article:IArticle) => {
-//   console.log('123')
-// }
+  const deleteCategorySingle = (id: string) => {
+    deleteCategoryAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      searchForm.value.categories = [''];
+      reload();
+    });
+  };
+
+  // const editArticleInfo = (article:IArticle) => {
+  //   console.log('123')
+  // }
 </script>
 
 <template>
@@ -234,24 +234,24 @@ const deleteCategorySingle = (id: string) => {
 </template>
 
 <style scoped lang="scss">
-.articlePage-container {
-  display: flex;
-  .articlePage-tree {
-    width: 20%;
-    .articlePage-tree-button {
-      display: flex;
-      flex: 1;
-      justify-content: space-between;
+  .articlePage-container {
+    display: flex;
+    .articlePage-tree {
+      width: 20%;
+      .articlePage-tree-button {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+      }
     }
-  }
-  .article-table {
-    width: 80%;
-    .article-table-title {
-      a:hover {
-        color: var(--el-color-primary);
-        border-bottom: 1px var(--el-color-primary) solid;
+    .article-table {
+      width: 80%;
+      .article-table-title {
+        a:hover {
+          color: var(--el-color-primary);
+          border-bottom: 1px var(--el-color-primary) solid;
+        }
       }
     }
   }
-}
 </style>

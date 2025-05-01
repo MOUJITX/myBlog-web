@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import MJTXTag from '@/components/publicUI/MJTXTag.vue';
-import { onMounted, ref } from 'vue';
-import { ITag } from '@/api/types';
-import { getTags } from '@/api/tag';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import MJTXTag from '@/components/publicUI/MJTXTag.vue';
+  import { onMounted, ref } from 'vue';
+  import { ITag } from '@/api/types';
+  import { getTags } from '@/api/tag';
 
-const tags = ref<ITag[]>([]);
+  const tags = ref<ITag[]>([]);
 
-onMounted(() => {
-  getTags().then(res => {
-    if (!res) return;
-    tags.value = res.data;
+  onMounted(() => {
+    getTags().then(res => {
+      if (!res) return;
+      tags.value = res.data;
+    });
   });
-});
 </script>
 
 <template>
@@ -39,33 +39,33 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.tag-card {
-  margin-top: 20px;
-}
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
-  .tag:before {
-    content: '#';
-    margin-right: 3px;
-    color: gray;
+  .tag-card {
+    margin-top: 20px;
   }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-  sup {
-    color: gray;
-    padding-left: 4px;
-  }
+    .tag:before {
+      content: '#';
+      margin-right: 3px;
+      color: gray;
+    }
 
-  .tag-count {
-    padding: 2px;
-    background: var(--color-black);
-    border-radius: 4px;
-    text-align: center;
-    color: white;
-    margin-left: 4px;
-    font-size: var(--font-size-small);
+    sup {
+      color: gray;
+      padding-left: 4px;
+    }
+
+    .tag-count {
+      padding: 2px;
+      background: var(--color-black);
+      border-radius: 4px;
+      text-align: center;
+      color: white;
+      margin-left: 4px;
+      font-size: var(--font-size-small);
+    }
   }
-}
 </style>

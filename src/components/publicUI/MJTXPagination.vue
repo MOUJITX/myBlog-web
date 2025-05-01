@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import { isMobile } from '@/utils/isMobile';
-import { defineProps, defineModel, defineEmits, PropType } from 'vue';
-const props = defineProps({
-  total: Number,
-  layout: {
-    type: String,
-    default: isMobile()
-      ? 'total, prev, next'
-      : 'total, sizes, prev, pager, next',
-  },
-  pageSizes: {
-    type: Array,
-    default() {
-      return [10, 20, 30, 50];
+  import { isMobile } from '@/utils/isMobile';
+  import { defineProps, defineModel, defineEmits, PropType } from 'vue';
+  const props = defineProps({
+    total: Number,
+    layout: {
+      type: String,
+      default: isMobile()
+        ? 'total, prev, next'
+        : 'total, sizes, prev, pager, next',
     },
-  },
-  background: {
-    type: Boolean,
-    default: true,
-  },
-  hideOnSinglePage: {
-    type: Boolean,
-    default: true,
-  },
-  position: {
-    type: String as PropType<'left' | 'center' | 'right'>,
-    default: 'right',
-  },
-});
+    pageSizes: {
+      type: Array,
+      default() {
+        return [10, 20, 30, 50];
+      },
+    },
+    background: {
+      type: Boolean,
+      default: true,
+    },
+    hideOnSinglePage: {
+      type: Boolean,
+      default: true,
+    },
+    position: {
+      type: String as PropType<'left' | 'center' | 'right'>,
+      default: 'right',
+    },
+  });
 
-const currentPage = defineModel('currentPage');
-const pageSize = defineModel('pageSize');
+  const currentPage = defineModel('currentPage');
+  const pageSize = defineModel('pageSize');
 
-const emit = defineEmits(['handleChange']);
+  const emit = defineEmits(['handleChange']);
 
-const handleSizeChange = (val: number) => {
-  emit('handleChange', { pageSize: val, currentPage: currentPage.value });
-};
-const handleCurrentChange = (val: number) => {
-  emit('handleChange', { pageSize: pageSize.value, currentPage: val });
-};
+  const handleSizeChange = (val: number) => {
+    emit('handleChange', { pageSize: val, currentPage: currentPage.value });
+  };
+  const handleCurrentChange = (val: number) => {
+    emit('handleChange', { pageSize: pageSize.value, currentPage: val });
+  };
 </script>
 
 <template>
@@ -56,7 +56,7 @@ const handleCurrentChange = (val: number) => {
 </template>
 
 <style scoped lang="scss">
-.el-pagination {
-  margin-top: 20px;
-}
+  .el-pagination {
+    margin-top: 20px;
+  }
 </style>

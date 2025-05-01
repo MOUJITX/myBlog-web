@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { isMobile } from '@/utils/isMobile';
-import { IWebsiteNavigation } from '@/api/types';
-import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
+  import { isMobile } from '@/utils/isMobile';
+  import { IWebsiteNavigation } from '@/api/types';
+  import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
 
-const webName = localStorage.getItem('web_name');
-const isSearch = localStorage.getItem('func_search') === 'true';
-const navigations: IWebsiteNavigation[] = JSON.parse(
-  localStorage.getItem('web_navigate') || '[]',
-);
+  const webName = localStorage.getItem('web_name');
+  const isSearch = localStorage.getItem('func_search') === 'true';
+  const navigations: IWebsiteNavigation[] = JSON.parse(
+    localStorage.getItem('web_navigate') || '[]',
+  );
 </script>
 
 <template>
@@ -25,75 +25,79 @@ const navigations: IWebsiteNavigation[] = JSON.parse(
       </ul>
     </div>
     <div class="nav-right">
-      <div v-if="!isMobile() && isSearch">search</div>
+      <div v-if="!isMobile() && isSearch" class='nav-search'>search</div>
       <div v-if="isMobile()">menu</div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.nav-bar {
-  position: fixed;
+  .nav-bar {
+    position: fixed;
 
-  width: 100%;
-  height: 50px;
-  opacity: 1;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(17, 24, 39, 0.1);
-  box-shadow: 0 8px 16px rgba(18, 38, 63, 0.05);
-  backdrop-filter: blur(8px);
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  z-index: 99999;
-  color: white;
-  font-weight: 500;
+    width: 100%;
+    height: 50px;
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    box-shadow: 0 8px 16px rgba(18, 38, 63, 0.05);
+    backdrop-filter: blur(8px);
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    z-index: 99999;
+    color: white;
+    font-weight: 500;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-}
-
-.nav-right div {
-  margin: 0 10px;
-}
-
-.nav-bar ul {
-  flex-direction: row;
-  display: flex;
-  list-style: none;
-  margin-left: 10px;
-}
-
-.nav-bar ul li {
-  padding: 0 10px;
-}
-
-.nav-bar ul li a {
-  line-height: 50px;
-}
-
-.nav-bar ul li:hover {
-  background-color: white;
-
-  a {
-    color: var(--color-black);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-}
+
+  .nav-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+
+  .nav-right div {
+    margin: 0 10px;
+  }
+
+  .nav-bar ul {
+    flex-direction: row;
+    display: flex;
+    list-style: none;
+    margin-left: 10px;
+  }
+
+  .nav-bar ul li {
+    padding: 0 10px;
+  }
+
+  .nav-bar ul li a {
+    line-height: 50px;
+  }
+
+  .nav-bar ul li:hover {
+    background-color: white;
+
+    a {
+      color: var(--color-black);
+    }
+  }
+
+  .nav-search {
+    border: 1px solid white;
+  }
 </style>

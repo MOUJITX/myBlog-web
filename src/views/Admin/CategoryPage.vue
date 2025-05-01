@@ -1,79 +1,79 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import { onMounted, ref } from 'vue';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
-import {
-  deleteCategoriesAPI,
-  deleteCategoryAPI,
-  getCategories,
-  getCategoriesPage,
-} from '@/api/category';
-import { ICategory } from '@/api/types';
-import { QuestionFilled } from '@element-plus/icons-vue';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
-import { ElNotification } from 'element-plus';
-import CategoryPopup from '@/components/Admin/Category/CategoryPopup.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import { onMounted, ref } from 'vue';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import {
+    deleteCategoriesAPI,
+    deleteCategoryAPI,
+    getCategories,
+    getCategoriesPage,
+  } from '@/api/category';
+  import { ICategory } from '@/api/types';
+  import { QuestionFilled } from '@element-plus/icons-vue';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import { ElNotification } from 'element-plus';
+  import CategoryPopup from '@/components/Admin/Category/CategoryPopup.vue';
 
-const tree = ref<ICategory[]>();
-const listQuery = ref({ currentPage: 1, pagesize: 10 });
-const total = ref(10);
-const tableData = ref<ICategory[]>([]);
+  const tree = ref<ICategory[]>();
+  const listQuery = ref({ currentPage: 1, pagesize: 10 });
+  const total = ref(10);
+  const tableData = ref<ICategory[]>([]);
 
-const currentUUID = ref('root');
+  const currentUUID = ref('root');
 
-const getDataList = () => {
-  getCategoriesPage(
-    listQuery.value.currentPage,
-    listQuery.value.pagesize,
-    currentUUID.value,
-  ).then(res => {
-    if (!res) return;
-    tableData.value = res.data.list;
-    total.value = res.data.total;
+  const getDataList = () => {
+    getCategoriesPage(
+      listQuery.value.currentPage,
+      listQuery.value.pagesize,
+      currentUUID.value,
+    ).then(res => {
+      if (!res) return;
+      tableData.value = res.data.list;
+      total.value = res.data.total;
+    });
+  };
+
+  const getTree = () => {
+    getCategories().then(res => {
+      if (!res) return;
+      tree.value = res.data;
+    });
+  };
+
+  const handleNodeClick = (data: ICategory) => {
+    currentUUID.value = data.uuid;
+    listQuery.value.currentPage = 1;
+    getDataList();
+  };
+
+  const deleteSingle = (id: string) => {
+    deleteCategoryAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      reload();
+    });
+  };
+
+  const deleteBatch = () => {
+    deleteCategoriesAPI(uuids.value).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      reload();
+    });
+  };
+
+  const uuids = ref<string[]>([]);
+  const tableRowSelect = (selected: ICategory[]) => {
+    uuids.value = selected.map((item: ICategory) => item.uuid);
+  };
+
+  const reload = () => {
+    getDataList();
+    getTree();
+  };
+
+  onMounted(() => {
+    getTree();
+    uuids.value = [];
   });
-};
-
-const getTree = () => {
-  getCategories().then(res => {
-    if (!res) return;
-    tree.value = res.data;
-  });
-};
-
-const handleNodeClick = (data: ICategory) => {
-  currentUUID.value = data.uuid;
-  listQuery.value.currentPage = 1;
-  getDataList();
-};
-
-const deleteSingle = (id: string) => {
-  deleteCategoryAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    reload();
-  });
-};
-
-const deleteBatch = () => {
-  deleteCategoriesAPI(uuids.value).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    reload();
-  });
-};
-
-const uuids = ref<string[]>([]);
-const tableRowSelect = (selected: ICategory[]) => {
-  uuids.value = selected.map((item: ICategory) => item.uuid);
-};
-
-const reload = () => {
-  getDataList();
-  getTree();
-};
-
-onMounted(() => {
-  getTree();
-  uuids.value = [];
-});
 </script>
 
 <template>
@@ -168,14 +168,14 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.categoryPage-container {
-  display: flex;
+  .categoryPage-container {
+    display: flex;
 
-  .categoryPage-tree {
-    width: 20%;
+    .categoryPage-tree {
+      width: 20%;
+    }
+    .categoryPage-table {
+      width: 80%;
+    }
   }
-  .categoryPage-table {
-    width: 80%;
-  }
-}
 </style>

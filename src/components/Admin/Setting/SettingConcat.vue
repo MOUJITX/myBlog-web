@@ -1,34 +1,35 @@
 <script setup lang="ts">
-import { defineEmits, defineModel, onMounted } from 'vue';
-import { Minus, Plus } from '@element-plus/icons-vue';
-import { IWebsiteConcat } from '@/api/types';
-import { defaultWebsiteConcat } from '@/api/websiteSetting';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import { defineEmits, defineModel, onMounted } from 'vue';
+  import { Minus, Plus } from '@element-plus/icons-vue';
+  import { IWebsiteConcat } from '@/api/types';
+  import { defaultWebsiteConcat } from '@/api/websiteSetting';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
 
-const tableData = defineModel<IWebsiteConcat[]>({ default: [] });
+  const tableData = defineModel<IWebsiteConcat[]>({ default: [] });
 
-const emit = defineEmits(['change']);
-const dataEdit = () => {
-  emit('change');
-};
+  const emit = defineEmits(['change']);
+  const dataEdit = () => {
+    emit('change');
+  };
 
-const dataAdd = (index: number) => {
-  tableData.value.splice(index + 1, 0, { ...defaultWebsiteConcat });
-  dataEdit();
-};
-
-const dataDel = (index: number) => {
-  tableData.value.splice(index, 1);
-  if (tableData.value.length === 0) tableData.value.push(defaultWebsiteConcat);
-  dataEdit();
-};
-
-onMounted(() => {
-  if (tableData.value.length === 0) {
-    tableData.value.push(defaultWebsiteConcat);
+  const dataAdd = (index: number) => {
+    tableData.value.splice(index + 1, 0, { ...defaultWebsiteConcat });
     dataEdit();
-  }
-});
+  };
+
+  const dataDel = (index: number) => {
+    tableData.value.splice(index, 1);
+    if (tableData.value.length === 0)
+      tableData.value.push(defaultWebsiteConcat);
+    dataEdit();
+  };
+
+  onMounted(() => {
+    if (tableData.value.length === 0) {
+      tableData.value.push(defaultWebsiteConcat);
+      dataEdit();
+    }
+  });
 </script>
 
 <template>

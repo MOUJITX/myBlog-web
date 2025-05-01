@@ -1,50 +1,50 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import { onMounted, ref } from 'vue';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
-import { ElNotification } from 'element-plus';
-import { deletePhotoAPI, deletePhotosAPI, getPhotoPage } from '@/api/photo';
-import { IPhoto } from '@/api/types';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
-import PhotoPopup from '@/components/Admin/Photo/PhotoPopup.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import { onMounted, ref } from 'vue';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import { ElNotification } from 'element-plus';
+  import { deletePhotoAPI, deletePhotosAPI, getPhotoPage } from '@/api/photo';
+  import { IPhoto } from '@/api/types';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import PhotoPopup from '@/components/Admin/Photo/PhotoPopup.vue';
 
-const tableData = ref<IPhoto[]>([]);
-const listQuery = ref({ currentPage: 1, pagesize: 10 });
-const total = ref(10);
+  const tableData = ref<IPhoto[]>([]);
+  const listQuery = ref({ currentPage: 1, pagesize: 10 });
+  const total = ref(10);
 
-const getDataList = () => {
-  getPhotoPage(listQuery.value.currentPage, listQuery.value.pagesize).then(
-    res => {
-      if (!res) return;
-      tableData.value = res.data.list;
-      total.value = res.data.total;
-    },
-  );
-};
+  const getDataList = () => {
+    getPhotoPage(listQuery.value.currentPage, listQuery.value.pagesize).then(
+      res => {
+        if (!res) return;
+        tableData.value = res.data.list;
+        total.value = res.data.total;
+      },
+    );
+  };
 
-const deleteSingle = (id: string) => {
-  deletePhotoAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
+  const deleteSingle = (id: string) => {
+    deletePhotoAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const deleteBatch = () => {
+    deletePhotosAPI(uuids.value).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const uuids = ref<string[]>([]);
+  const tableRowSelect = (selected: IPhoto[]) => {
+    uuids.value = selected.map((item: IPhoto) => item.uuid);
+  };
+
+  onMounted(() => {
     getDataList();
+    uuids.value = [];
   });
-};
-
-const deleteBatch = () => {
-  deletePhotosAPI(uuids.value).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    getDataList();
-  });
-};
-
-const uuids = ref<string[]>([]);
-const tableRowSelect = (selected: IPhoto[]) => {
-  uuids.value = selected.map((item: IPhoto) => item.uuid);
-};
-
-onMounted(() => {
-  getDataList();
-  uuids.value = [];
-});
 </script>
 
 <template>

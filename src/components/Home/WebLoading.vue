@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MJTXLoading from '@/components/publicUI/MJTXLoading.vue';
+  import MJTXLoading from '@/components/publicUI/MJTXLoading.vue';
 </script>
 
 <template>
@@ -9,11 +9,11 @@ import MJTXLoading from '@/components/publicUI/MJTXLoading.vue';
 </template>
 
 <style scoped lang="scss">
-.loading {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .loading {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { defineProps, PropType } from 'vue';
-const props = defineProps({
-  position: {
-    type: String as PropType<
-      'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline'
-    >,
-    default: 'flex-end',
-  },
-});
+  import { defineProps, PropType } from 'vue';
+  const props = defineProps({
+    position: {
+      type: String as PropType<
+        'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline'
+      >,
+      default: 'flex-end',
+    },
+  });
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
-.mjtx-inline {
-  display: flex;
-}
+  .mjtx-inline {
+    display: flex;
+  }
 </style>

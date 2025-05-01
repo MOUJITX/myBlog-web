@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import BannerBox from '@/components/Home/BannerBox.vue';
-import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
-import PhotoShow from '@/components/Home/PhotoShow.vue';
-import { defaultPhoto, selectPhotoByID } from '@/api/photo';
-import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
-import { IPhoto } from '@/api/types';
+  import BannerBox from '@/components/Home/BannerBox.vue';
+  import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
+  import PhotoShow from '@/components/Home/PhotoShow.vue';
+  import { defaultPhoto, selectPhotoByID } from '@/api/photo';
+  import { useRoute } from 'vue-router';
+  import { onMounted, ref } from 'vue';
+  import { IPhoto } from '@/api/types';
 
-const route = useRoute();
-const photoUUID = route.params.uuid as string;
+  const route = useRoute();
+  const photoUUID = route.params.uuid as string;
 
-const photoData = ref<IPhoto>({ ...defaultPhoto });
-const getPhoto = () => {
-  selectPhotoByID(photoUUID).then(res => {
-    if (!res) return;
-    photoData.value = res.data;
+  const photoData = ref<IPhoto>({ ...defaultPhoto });
+  const getPhoto = () => {
+    selectPhotoByID(photoUUID).then(res => {
+      if (!res) return;
+      photoData.value = res.data;
+    });
+  };
+
+  onMounted(() => {
+    getPhoto();
   });
-};
-
-onMounted(() => {
-  getPhoto();
-});
 </script>
 
 <template>
@@ -49,15 +49,15 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.photo {
-  max-width: var(--max-width);
-  min-height: var(--min-height);
-  margin: 20px auto;
+  .photo {
+    max-width: var(--max-width);
+    min-height: var(--min-height);
+    margin: 20px auto;
 
-  .photo-list {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+    .photo-list {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
-}
 </style>

@@ -1,38 +1,38 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { IWebsiteSetting } from '@/api/types';
-import { getWebsiteSettingAdmin, updateWebsite } from '@/api/websiteSetting';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
-import { ElNotification } from 'element-plus';
-import SettingNavigation from '@/components/Admin/Setting/SettingNavigation.vue';
-import SettingConcat from '@/components/Admin/Setting/SettingConcat.vue';
-import MJTXTinymceEditor from '@/components/publicUI/MJTXTinymceEditor.vue';
+  import { onMounted, ref } from 'vue';
+  import { IWebsiteSetting } from '@/api/types';
+  import { getWebsiteSettingAdmin, updateWebsite } from '@/api/websiteSetting';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import { ElNotification } from 'element-plus';
+  import SettingNavigation from '@/components/Admin/Setting/SettingNavigation.vue';
+  import SettingConcat from '@/components/Admin/Setting/SettingConcat.vue';
+  import MJTXTinymceEditor from '@/components/publicUI/MJTXTinymceEditor.vue';
 
-const websiteSettings = ref<IWebsiteSetting[]>([]);
+  const websiteSettings = ref<IWebsiteSetting[]>([]);
 
-onMounted(() => {
-  getSettings();
-});
-
-const getSettings = () => {
-  getWebsiteSettingAdmin().then(res => {
-    if (!res) return;
-    websiteSettings.value = res.data;
+  onMounted(() => {
+    getSettings();
   });
-};
 
-const tabLabel = ['基础设置', '网站导航', '功能开关', '个人信息'];
-const tabName = ref<string>(tabLabel[0]);
-const tabChange = (index: number) => {
-  tabName.value = tabLabel[index];
-};
+  const getSettings = () => {
+    getWebsiteSettingAdmin().then(res => {
+      if (!res) return;
+      websiteSettings.value = res.data;
+    });
+  };
 
-const updateSetting = (item: IWebsiteSetting) => {
-  updateWebsite(item).then(res => {
-    if (!res) return;
-    ElNotification.success({ title: '更新成功' });
-  });
-};
+  const tabLabel = ['基础设置', '网站导航', '功能开关', '个人信息'];
+  const tabName = ref<string>(tabLabel[0]);
+  const tabChange = (index: number) => {
+    tabName.value = tabLabel[index];
+  };
+
+  const updateSetting = (item: IWebsiteSetting) => {
+    updateWebsite(item).then(res => {
+      if (!res) return;
+      ElNotification.success({ title: '更新成功' });
+    });
+  };
 </script>
 <template>
   <div class="setting-title">{{ tabName }}</div>
@@ -121,9 +121,9 @@ const updateSetting = (item: IWebsiteSetting) => {
   </el-form>
 </template>
 <style scoped>
-.setting-title {
-  font-size: 25px;
-  font-weight: bold;
-  margin: 10px 0;
-}
+  .setting-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
 </style>

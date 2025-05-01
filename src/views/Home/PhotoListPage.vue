@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import BannerBox from '@/components/Home/BannerBox.vue';
-import { IPhoto, IWebsiteNavigation } from '@/api/types';
-import { random } from 'lodash';
-import PhotoShow from '@/components/Home/PhotoShow.vue';
-import { onMounted, ref } from 'vue';
-import { getPhotoList } from '@/api/photo';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import BannerBox from '@/components/Home/BannerBox.vue';
+  import { IPhoto, IWebsiteNavigation } from '@/api/types';
+  import { random } from 'lodash';
+  import PhotoShow from '@/components/Home/PhotoShow.vue';
+  import { onMounted, ref } from 'vue';
+  import { getPhotoList } from '@/api/photo';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
 
-const pageSettingItem: IWebsiteNavigation = JSON.parse(
-  localStorage.getItem('web_navigate') || '[]',
-).find((item: { nav_url: string }) => item.nav_url === '/photo');
-const rand = random(pageSettingItem.nav_banner.length - 1, false);
+  const pageSettingItem: IWebsiteNavigation = JSON.parse(
+    localStorage.getItem('web_navigate') || '[]',
+  ).find((item: { nav_url: string }) => item.nav_url === '/photo');
+  const rand = random(pageSettingItem.nav_banner.length - 1, false);
 
-const listData = ref<IPhoto[]>([]);
-const listQuery = ref({ currentPage: 1, pagesize: 12 });
-const total = ref(10);
+  const listData = ref<IPhoto[]>([]);
+  const listQuery = ref({ currentPage: 1, pagesize: 12 });
+  const total = ref(10);
 
-const getDataList = () => {
-  getPhotoList(listQuery.value.currentPage, listQuery.value.pagesize).then(
-    res => {
-      if (!res) return;
-      listData.value = res.data.list;
-      total.value = res.data.total;
-    },
-  );
-};
+  const getDataList = () => {
+    getPhotoList(listQuery.value.currentPage, listQuery.value.pagesize).then(
+      res => {
+        if (!res) return;
+        listData.value = res.data.list;
+        total.value = res.data.total;
+      },
+    );
+  };
 
-onMounted(() => {
-  getDataList();
-});
+  onMounted(() => {
+    getDataList();
+  });
 </script>
 
 <template>
@@ -59,15 +59,15 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.photo {
-  max-width: var(--max-width);
-  min-height: var(--min-height);
-  margin: 20px auto;
+  .photo {
+    max-width: var(--max-width);
+    min-height: var(--min-height);
+    margin: 20px auto;
 
-  .photo-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    .photo-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
-}
 </style>

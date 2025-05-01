@@ -1,92 +1,92 @@
 <script lang="ts" setup>
-import {
-  reactive,
-  ref,
-  defineEmits,
-  defineProps,
-  onMounted,
-  PropType,
-} from 'vue';
-import { ElNotification, FormInstance, FormRules } from 'element-plus';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
-import { IResume, IResumeSection } from '@/api/types';
-import {
-  defaultResume,
-  insetResume,
-  selectResumeByID,
-  updateResume,
-} from '@/api/resume';
-import InfoCard from '@/components/Home/InfoCard.vue';
-import { getResumeSections } from '@/api/resumeSection';
-import MJTXTinymceEditor from '@/components/publicUI/MJTXTinymceEditor.vue';
+  import {
+    reactive,
+    ref,
+    defineEmits,
+    defineProps,
+    onMounted,
+    PropType,
+  } from 'vue';
+  import { ElNotification, FormInstance, FormRules } from 'element-plus';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import { IResume, IResumeSection } from '@/api/types';
+  import {
+    defaultResume,
+    insetResume,
+    selectResumeByID,
+    updateResume,
+  } from '@/api/resume';
+  import InfoCard from '@/components/Home/InfoCard.vue';
+  import { getResumeSections } from '@/api/resumeSection';
+  import MJTXTinymceEditor from '@/components/publicUI/MJTXTinymceEditor.vue';
 
-const props = defineProps({
-  uuid: {
-    type: String,
-    default: null,
-  },
-  action: {
-    type: String as PropType<'insert' | 'update' | 'copy'>,
-    required: true,
-  },
-});
-
-const rules = reactive<FormRules<IResume>>({
-  section: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  ordernum: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  title: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  direction: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-});
-
-const formRef = ref<FormInstance>();
-const resumeForm = ref<IResume>({ ...defaultResume });
-const isText = ref<boolean>(true);
-const resumeSections = ref<IResumeSection[]>([]);
-
-onMounted(() => {
-  if (props.action !== 'insert') {
-    selectResumeByID(props.uuid).then(res => {
-      if (!res) {
-        emit('handle-close');
-        return;
-      }
-      resumeForm.value = res.data;
-      isText.value = !res.data.icon.icon.startsWith('/files');
-    });
-  }
-  getResumeSectionsList();
-});
-
-const getResumeSectionsList = () => {
-  getResumeSections().then(res => {
-    if (!res) return;
-    resumeSections.value = res.data;
+  const props = defineProps({
+    uuid: {
+      type: String,
+      default: null,
+    },
+    action: {
+      type: String as PropType<'insert' | 'update' | 'copy'>,
+      required: true,
+    },
   });
-};
 
-const emit = defineEmits(['handle-close']);
-const submitForm = async (formRef: FormInstance) => {
-  await formRef.validate(valid => {
-    if (valid) {
-      if (props.action === 'update') {
-        updateResume(resumeForm.value).then(res => {
-          if (!res) return;
-          ElNotification.success({ title: res.data });
+  const rules = reactive<FormRules<IResume>>({
+    section: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    ordernum: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    title: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    direction: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+  });
+
+  const formRef = ref<FormInstance>();
+  const resumeForm = ref<IResume>({ ...defaultResume });
+  const isText = ref<boolean>(true);
+  const resumeSections = ref<IResumeSection[]>([]);
+
+  onMounted(() => {
+    if (props.action !== 'insert') {
+      selectResumeByID(props.uuid).then(res => {
+        if (!res) {
           emit('handle-close');
-        });
-      } else {
-        insetResume(resumeForm.value).then(res => {
-          if (!res) return;
-          ElNotification.success({ title: res.data });
-          emit('handle-close');
-        });
-      }
+          return;
+        }
+        resumeForm.value = res.data;
+        isText.value = !res.data.icon.icon.startsWith('/files');
+      });
     }
+    getResumeSectionsList();
   });
-};
-const resetForm = () => {
-  resumeForm.value = { ...defaultResume };
-};
+
+  const getResumeSectionsList = () => {
+    getResumeSections().then(res => {
+      if (!res) return;
+      resumeSections.value = res.data;
+    });
+  };
+
+  const emit = defineEmits(['handle-close']);
+  const submitForm = async (formRef: FormInstance) => {
+    await formRef.validate(valid => {
+      if (valid) {
+        if (props.action === 'update') {
+          updateResume(resumeForm.value).then(res => {
+            if (!res) return;
+            ElNotification.success({ title: res.data });
+            emit('handle-close');
+          });
+        } else {
+          insetResume(resumeForm.value).then(res => {
+            if (!res) return;
+            ElNotification.success({ title: res.data });
+            emit('handle-close');
+          });
+        }
+      }
+    });
+  };
+  const resetForm = () => {
+    resumeForm.value = { ...defaultResume };
+  };
 </script>
 
 <template>

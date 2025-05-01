@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import BannerBox from '@/components/Home/BannerBox.vue';
-import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
-import InfoCard from '@/components/Home/InfoCard.vue';
-import { onMounted, ref } from 'vue';
-import { IResumeSection, IWebsiteNavigation } from '@/api/types';
-import { getResumesPublic } from '@/api/resume';
-import { random } from 'lodash';
+  import BannerBox from '@/components/Home/BannerBox.vue';
+  import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
+  import InfoCard from '@/components/Home/InfoCard.vue';
+  import { onMounted, ref } from 'vue';
+  import { IResumeSection, IWebsiteNavigation } from '@/api/types';
+  import { getResumesPublic } from '@/api/resume';
+  import { random } from 'lodash';
 
-const resumes = ref<IResumeSection[]>([]);
+  const resumes = ref<IResumeSection[]>([]);
 
-onMounted(() => {
-  getResumesPublic().then(res => {
-    resumes.value = res.data;
+  onMounted(() => {
+    getResumesPublic().then(res => {
+      resumes.value = res.data;
+    });
   });
-});
 
-const pageSettingItem: IWebsiteNavigation = JSON.parse(
-  localStorage.getItem('web_navigate') || '[]',
-).find((item: { nav_url: string }) => item.nav_url === '/resume');
-const rand = random(pageSettingItem.nav_banner.length - 1, false);
+  const pageSettingItem: IWebsiteNavigation = JSON.parse(
+    localStorage.getItem('web_navigate') || '[]',
+  ).find((item: { nav_url: string }) => item.nav_url === '/resume');
+  const rand = random(pageSettingItem.nav_banner.length - 1, false);
 </script>
 
 <template>
@@ -58,26 +58,26 @@ const rand = random(pageSettingItem.nav_banner.length - 1, false);
 </template>
 
 <style scoped lang="scss">
-.resume-banner {
-  height: var(--banner-height-page);
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  text-align: center;
-}
-.resume {
-  max-width: var(--max-width);
-  min-height: var(--min-height);
-  margin: 20px auto;
+  .resume-banner {
+    height: var(--banner-height-page);
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+  }
+  .resume {
+    max-width: var(--max-width);
+    min-height: var(--min-height);
+    margin: 20px auto;
 
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.resume-skill-apps {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .resume-skill-apps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 </style>

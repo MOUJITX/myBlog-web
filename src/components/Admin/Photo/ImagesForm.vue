@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
-const props = defineProps({});
+  import { defineProps } from 'vue';
+  const props = defineProps({});
 </script>
 
 <template>

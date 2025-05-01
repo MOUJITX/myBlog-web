@@ -1,95 +1,95 @@
 <script lang="ts" setup>
-import {
-  reactive,
-  ref,
-  defineEmits,
-  defineProps,
-  onMounted,
-  PropType,
-} from 'vue';
-import { ElNotification, FormInstance, FormRules } from 'element-plus';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
-import { IPhoto } from '@/api/types';
-import {
-  defaultPhoto,
-  defaultPhotoImage,
-  insetPhoto,
-  selectPhotoByID,
-  updatePhoto,
-} from '@/api/photo';
+  import {
+    reactive,
+    ref,
+    defineEmits,
+    defineProps,
+    onMounted,
+    PropType,
+  } from 'vue';
+  import { ElNotification, FormInstance, FormRules } from 'element-plus';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import { IPhoto } from '@/api/types';
+  import {
+    defaultPhoto,
+    defaultPhotoImage,
+    insetPhoto,
+    selectPhotoByID,
+    updatePhoto,
+  } from '@/api/photo';
 
-const props = defineProps({
-  uuid: {
-    type: String,
-    default: null,
-  },
-  action: {
-    type: String as PropType<'insert' | 'update' | 'copy'>,
-    required: true,
-  },
-});
+  const props = defineProps({
+    uuid: {
+      type: String,
+      default: null,
+    },
+    action: {
+      type: String as PropType<'insert' | 'update' | 'copy'>,
+      required: true,
+    },
+  });
 
-const rules = reactive<FormRules<IPhoto>>({
-  title: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  index_img: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-});
+  const rules = reactive<FormRules<IPhoto>>({
+    title: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    index_img: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+  });
 
-const formRef = ref<FormInstance>();
-const photoForm = ref<IPhoto>({ ...defaultPhoto });
+  const formRef = ref<FormInstance>();
+  const photoForm = ref<IPhoto>({ ...defaultPhoto });
 
-onMounted(() => {
-  if (props.action !== 'insert') {
-    selectPhotoByID(props.uuid).then(res => {
-      if (!res) {
-        emit('handle-close');
-        return;
-      }
-      photoForm.value = res.data;
-    });
-  }
-});
-
-const emit = defineEmits(['handle-close']);
-const submitForm = async (formRef: FormInstance) => {
-  await formRef.validate(valid => {
-    if (valid) {
-      if (props.action === 'update') {
-        updatePhoto(photoForm.value).then(res => {
-          if (!res) return;
-          ElNotification.success({ title: res.data });
+  onMounted(() => {
+    if (props.action !== 'insert') {
+      selectPhotoByID(props.uuid).then(res => {
+        if (!res) {
           emit('handle-close');
-        });
-      } else {
-        insetPhoto(photoForm.value).then(res => {
-          if (!res) return;
-          ElNotification.success({ title: res.data });
-          emit('handle-close');
-        });
-      }
+          return;
+        }
+        photoForm.value = res.data;
+      });
     }
   });
-};
-const resetForm = () => {
-  photoForm.value = { ...defaultPhoto };
-};
 
-const editGroupValue = ref(0);
-const editImageGroup = (targetIndex: number, action: 'remove' | 'add') => {
-  console.log(targetIndex, action);
-  if (action === 'add') {
-    //editGroupValue.value = photoForm.value.images.length;
-    photoForm.value.images.splice(editGroupValue.value, 0, {
-      ...defaultPhotoImage,
+  const emit = defineEmits(['handle-close']);
+  const submitForm = async (formRef: FormInstance) => {
+    await formRef.validate(valid => {
+      if (valid) {
+        if (props.action === 'update') {
+          updatePhoto(photoForm.value).then(res => {
+            if (!res) return;
+            ElNotification.success({ title: res.data });
+            emit('handle-close');
+          });
+        } else {
+          insetPhoto(photoForm.value).then(res => {
+            if (!res) return;
+            ElNotification.success({ title: res.data });
+            emit('handle-close');
+          });
+        }
+      }
     });
-    photoForm.value.images[editGroupValue.value].images = [];
-  } else if (action === 'remove') {
-    if (targetIndex === editGroupValue.value)
-      editGroupValue.value = targetIndex - 1;
-    else if (targetIndex < editGroupValue.value)
-      editGroupValue.value = editGroupValue.value - 1;
-    photoForm.value.images.splice(targetIndex, 1);
-  }
-};
+  };
+  const resetForm = () => {
+    photoForm.value = { ...defaultPhoto };
+  };
+
+  const editGroupValue = ref(0);
+  const editImageGroup = (targetIndex: number, action: 'remove' | 'add') => {
+    console.log(targetIndex, action);
+    if (action === 'add') {
+      //editGroupValue.value = photoForm.value.images.length;
+      photoForm.value.images.splice(editGroupValue.value, 0, {
+        ...defaultPhotoImage,
+      });
+      photoForm.value.images[editGroupValue.value].images = [];
+    } else if (action === 'remove') {
+      if (targetIndex === editGroupValue.value)
+        editGroupValue.value = targetIndex - 1;
+      else if (targetIndex < editGroupValue.value)
+        editGroupValue.value = editGroupValue.value - 1;
+      photoForm.value.images.splice(targetIndex, 1);
+    }
+  };
 </script>
 
 <template>

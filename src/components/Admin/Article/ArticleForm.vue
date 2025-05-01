@@ -1,58 +1,58 @@
 <script lang="ts" setup>
-import { reactive, ref, defineEmits, defineModel, onMounted } from 'vue';
-import { FormInstance, FormRules } from 'element-plus';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
-import { IArticle, ICategory, ITag } from '@/api/types';
-import { Flag, Link, Refresh, StarFilled } from '@element-plus/icons-vue';
-import { getTags } from '@/api/tag';
-import { getCategories } from '@/api/category';
-import htmlToText from '@/utils/htmlToText';
-import TagPopup from '@/components/Admin/Tag/TagPopup.vue';
+  import { reactive, ref, defineEmits, defineModel, onMounted } from 'vue';
+  import { FormInstance, FormRules } from 'element-plus';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import { IArticle, ICategory, ITag } from '@/api/types';
+  import { Flag, Link, Refresh, StarFilled } from '@element-plus/icons-vue';
+  import { getTags } from '@/api/tag';
+  import { getCategories } from '@/api/category';
+  import htmlToText from '@/utils/htmlToText';
+  import TagPopup from '@/components/Admin/Tag/TagPopup.vue';
 
-const articleForm = defineModel<IArticle>();
+  const articleForm = defineModel<IArticle>();
 
-const rules = reactive<FormRules<IArticle>>({
-  title: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  description: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  image_url: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  author: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-  categories: [{ required: true, message: '不允许为空', trigger: 'blur' }],
-});
-
-const formRef = ref<FormInstance>();
-const emit = defineEmits(['handle-close']);
-const submitForm = async (formRef: FormInstance) => {
-  await formRef.validate(valid => {
-    if (valid) {
-      emit('handle-close');
-    }
+  const rules = reactive<FormRules<IArticle>>({
+    title: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    description: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    image_url: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    author: [{ required: true, message: '不允许为空', trigger: 'blur' }],
+    categories: [{ required: true, message: '不允许为空', trigger: 'blur' }],
   });
-};
-const tags = ref<ITag[]>([]);
-const categories = ref<ICategory[]>();
-const getAllTags = () => {
-  getTags().then(res => {
-    if (!res) return;
-    tags.value = res.data;
+
+  const formRef = ref<FormInstance>();
+  const emit = defineEmits(['handle-close']);
+  const submitForm = async (formRef: FormInstance) => {
+    await formRef.validate(valid => {
+      if (valid) {
+        emit('handle-close');
+      }
+    });
+  };
+  const tags = ref<ITag[]>([]);
+  const categories = ref<ICategory[]>();
+  const getAllTags = () => {
+    getTags().then(res => {
+      if (!res) return;
+      tags.value = res.data;
+    });
+  };
+
+  const getAllCategories = () => {
+    getCategories().then(res => {
+      if (!res) return;
+      categories.value = res.data;
+    });
+  };
+
+  onMounted(() => {
+    getAllTags();
+    getAllCategories();
   });
-};
 
-const getAllCategories = () => {
-  getCategories().then(res => {
-    if (!res) return;
-    categories.value = res.data;
-  });
-};
-
-onMounted(() => {
-  getAllTags();
-  getAllCategories();
-});
-
-const refreshDescription = (content: string | undefined) => {
-  if (articleForm.value)
-    articleForm.value.description = htmlToText(content || '');
-};
+  const refreshDescription = (content: string | undefined) => {
+    if (articleForm.value)
+      articleForm.value.description = htmlToText(content || '');
+  };
 </script>
 
 <template>
@@ -157,19 +157,19 @@ const refreshDescription = (content: string | undefined) => {
 </template>
 
 <style scoped lang="scss">
-.el-check-tag {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-}
-.articleSetting-viewCode {
-  display: flex;
-  align-items: center;
-  width: 100%;
-
-  .el-input {
-    padding-left: 10px;
+  .el-check-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
   }
-}
+  .articleSetting-viewCode {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .el-input {
+      padding-left: 10px;
+    }
+  }
 </style>

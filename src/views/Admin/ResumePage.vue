@@ -1,77 +1,77 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
-import { ElNotification } from 'element-plus';
-import { onMounted, ref } from 'vue';
-import { IResume, IResumeSection, IValueAndText } from '@/api/types';
-import {
-  defaultResume,
-  deleteResumeAPI,
-  deleteResumesAPI,
-  getResumesPage,
-} from '@/api/resume';
-import ResumePopup from '@/components/Admin/Resume/ResumePopup.vue';
-import ResumeSectionListPopup from '@/components/Admin/ResumeSection/ResumeSectionListPopup.vue';
-import { getResumeSections } from '@/api/resumeSection';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import { ElNotification } from 'element-plus';
+  import { onMounted, ref } from 'vue';
+  import { IResume, IResumeSection, IValueAndText } from '@/api/types';
+  import {
+    defaultResume,
+    deleteResumeAPI,
+    deleteResumesAPI,
+    getResumesPage,
+  } from '@/api/resume';
+  import ResumePopup from '@/components/Admin/Resume/ResumePopup.vue';
+  import ResumeSectionListPopup from '@/components/Admin/ResumeSection/ResumeSectionListPopup.vue';
+  import { getResumeSections } from '@/api/resumeSection';
 
-const tableData = ref<IResume[]>([]);
-const listQuery = ref({ currentPage: 1, pagesize: 10 });
-const total = ref(10);
-const searchForm = ref<IResume>({ ...defaultResume });
+  const tableData = ref<IResume[]>([]);
+  const listQuery = ref({ currentPage: 1, pagesize: 10 });
+  const total = ref(10);
+  const searchForm = ref<IResume>({ ...defaultResume });
 
-const getDataList = () => {
-  getResumesPage(
-    listQuery.value.currentPage,
-    listQuery.value.pagesize,
-    searchForm.value,
-  ).then(res => {
-    if (!res) return;
-    tableData.value = res.data.list;
-    total.value = res.data.total;
-  });
-};
+  const getDataList = () => {
+    getResumesPage(
+      listQuery.value.currentPage,
+      listQuery.value.pagesize,
+      searchForm.value,
+    ).then(res => {
+      if (!res) return;
+      tableData.value = res.data.list;
+      total.value = res.data.total;
+    });
+  };
 
-const deleteSingle = (id: string) => {
-  deleteResumeAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
+  const deleteSingle = (id: string) => {
+    deleteResumeAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const deleteBatch = () => {
+    deleteResumesAPI(uuids.value).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const uuids = ref<string[]>([]);
+  const tableRowSelect = (selected: IResume[]) => {
+    uuids.value = selected.map((item: IResume) => item.uuid);
+  };
+
+  onMounted(() => {
     getDataList();
+    getResumeSectionsList();
+    uuids.value = [];
   });
-};
 
-const deleteBatch = () => {
-  deleteResumesAPI(uuids.value).then(res => {
-    if (res) ElNotification.success({ title: res.data });
+  const resumeSections = ref<IValueAndText[]>([]);
+  const getResumeSectionsList = () => {
+    getResumeSections().then(res => {
+      if (!res) return;
+      resumeSections.value = res.data.map((item: IResumeSection) => ({
+        value: item.uuid,
+        text: item.ordernum + '.' + item.section,
+      }));
+    });
+  };
+
+  const tableFilter = (filters: { section: string[] }) => {
+    searchForm.value.section = filters.section[0];
+    listQuery.value = { currentPage: 1, pagesize: 10 };
     getDataList();
-  });
-};
-
-const uuids = ref<string[]>([]);
-const tableRowSelect = (selected: IResume[]) => {
-  uuids.value = selected.map((item: IResume) => item.uuid);
-};
-
-onMounted(() => {
-  getDataList();
-  getResumeSectionsList();
-  uuids.value = [];
-});
-
-const resumeSections = ref<IValueAndText[]>([]);
-const getResumeSectionsList = () => {
-  getResumeSections().then(res => {
-    if (!res) return;
-    resumeSections.value = res.data.map((item: IResumeSection) => ({
-      value: item.uuid,
-      text: item.ordernum + '.' + item.section,
-    }));
-  });
-};
-
-const tableFilter = (filters: { section: string[] }) => {
-  searchForm.value.section = filters.section[0];
-  listQuery.value = { currentPage: 1, pagesize: 10 };
-  getDataList();
-};
+  };
 </script>
 
 <template>

@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import { ref, defineModel, defineProps } from 'vue';
-import MJTXImageGrid from '@/components/publicUI/MJTXImageGrid.vue';
-import { UploadFilled } from '@element-plus/icons-vue';
-import { ResponseAPI } from '@/api/types';
-import { ElNotification, TabsPaneContext } from 'element-plus';
-import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
+  import { ref, defineModel, defineProps } from 'vue';
+  import MJTXImageGrid from '@/components/publicUI/MJTXImageGrid.vue';
+  import { UploadFilled } from '@element-plus/icons-vue';
+  import { ResponseAPI } from '@/api/types';
+  import { ElNotification, TabsPaneContext } from 'element-plus';
+  import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
 
-const imagesList = defineModel<string[]>({ default: [] });
-const token = localStorage.getItem('token');
+  const imagesList = defineModel<string[]>({ default: [] });
+  const token = localStorage.getItem('token');
 
-const props = defineProps({
-  showBtn: {
-    type: Boolean,
-    default: false,
-  },
-  limit: {
-    type: Number,
-  },
-});
-const filesUploadSuccess = (res: ResponseAPI) => {
-  if (res.code === 200) {
-    ElNotification.success({ title: `图片[${res.data.name}]上传成功` });
-    imagesList.value.push(res.data.url);
-  }
-};
+  const props = defineProps({
+    showBtn: {
+      type: Boolean,
+      default: false,
+    },
+    limit: {
+      type: Number,
+    },
+  });
+  const filesUploadSuccess = (res: ResponseAPI) => {
+    if (res.code === 200) {
+      ElNotification.success({ title: `图片[${res.data.name}]上传成功` });
+      imagesList.value.push(res.data.url);
+    }
+  };
 
-const MJTXImageGridRef = ref();
+  const MJTXImageGridRef = ref();
 
-const tabsName = 'select';
-const handleClick = (tab: TabsPaneContext) => {
-  if (tab.paneName === 'select') {
-    MJTXImageGridRef.value.getDataList();
-  }
-};
+  const tabsName = 'select';
+  const handleClick = (tab: TabsPaneContext) => {
+    if (tab.paneName === 'select') {
+      MJTXImageGridRef.value.getDataList();
+    }
+  };
 
-const uploadDialogShow = ref<boolean>(false);
+  const uploadDialogShow = ref<boolean>(false);
 </script>
 
 <template>

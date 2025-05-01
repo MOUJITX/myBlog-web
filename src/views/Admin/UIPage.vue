@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import MJTXIcon from '@/components/publicUI/MJTXIcon.vue';
-import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
-import MJTXTimeLine from '@/components/publicUI/MJTXTimeLine.vue';
-import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
-import MJTXTag from '@/components/publicUI/MJTXTag.vue';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
-import { ref } from 'vue';
-import InfoCard from '@/components/Home/InfoCard.vue';
-import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
-import TagForm from '@/components/Admin/Tag/TagForm.vue';
-import MJTXTinymceEditor from '@/components/publicUI/MJTXTinymceEditor.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import MJTXIcon from '@/components/publicUI/MJTXIcon.vue';
+  import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
+  import MJTXTimeLine from '@/components/publicUI/MJTXTimeLine.vue';
+  import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
+  import MJTXTag from '@/components/publicUI/MJTXTag.vue';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import { ref } from 'vue';
+  import InfoCard from '@/components/Home/InfoCard.vue';
+  import MJTXImageUpload from '@/components/publicUI/MJTXImageUpload.vue';
+  import TagForm from '@/components/Admin/Tag/TagForm.vue';
+  import MJTXTinymceEditor from '@/components/publicUI/MJTXTinymceEditor.vue';
 
-const listQuery = ref({ currentPage: 1, pagesize: 10 });
-const total = 100;
+  const listQuery = ref({ currentPage: 1, pagesize: 10 });
+  const total = 100;
 
-const richText = ref();
+  const richText = ref();
 
-const imageUrl = ref<string>();
-const imageUrls = ref<string[]>([]);
+  const imageUrl = ref<string>();
+  const imageUrls = ref<string[]>([]);
 </script>
 
 <template>

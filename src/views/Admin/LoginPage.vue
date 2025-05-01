@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { ElNotification, FormInstance, FormRules } from 'element-plus';
-import { ILogin } from '@/api/types';
-import { loginAdmin, loginDefault } from '@/api/user';
-import { Lock, User } from '@element-plus/icons-vue';
-import router from '@/router';
+  import { reactive, ref } from 'vue';
+  import { ElNotification, FormInstance, FormRules } from 'element-plus';
+  import { ILogin } from '@/api/types';
+  import { loginAdmin, loginDefault } from '@/api/user';
+  import { Lock, User } from '@element-plus/icons-vue';
+  import router from '@/router';
 
-const rules = reactive<FormRules<ILogin>>({
-  username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 64, message: '密码长度在6-64个字符', trigger: 'blur' },
-  ],
-});
-
-const formRef = ref<FormInstance>();
-const loginForm = ref<ILogin>({ ...loginDefault });
-
-const login = async (formRef: FormInstance) => {
-  await formRef.validate(valid => {
-    if (valid) {
-      loginAdmin(loginForm.value).then(res => {
-        if (!res) return;
-        ElNotification({
-          type: 'success',
-          title: res.msg,
-        });
-        router.push('/admin');
-        localStorage.setItem('userid', res.data.uuid);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('nickname', res.data.nickname);
-      });
-    }
+  const rules = reactive<FormRules<ILogin>>({
+    username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+    password: [
+      { required: true, message: '请输入密码', trigger: 'blur' },
+      { min: 6, max: 64, message: '密码长度在6-64个字符', trigger: 'blur' },
+    ],
   });
-};
+
+  const formRef = ref<FormInstance>();
+  const loginForm = ref<ILogin>({ ...loginDefault });
+
+  const login = async (formRef: FormInstance) => {
+    await formRef.validate(valid => {
+      if (valid) {
+        loginAdmin(loginForm.value).then(res => {
+          if (!res) return;
+          ElNotification({
+            type: 'success',
+            title: res.msg,
+          });
+          router.push('/admin');
+          localStorage.setItem('userid', res.data.uuid);
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('nickname', res.data.nickname);
+        });
+      }
+    });
+  };
 </script>
 
 <template>
@@ -76,36 +76,36 @@ const login = async (formRef: FormInstance) => {
 </template>
 
 <style scoped lang="scss">
-.login-container {
-  height: 100vh;
-  background-color: #2d3a4b;
+  .login-container {
+    height: 100vh;
+    background-color: #2d3a4b;
 
-  .login-form {
-    max-width: 520px;
-    padding: 160px 30px 0;
-    margin: 0 auto;
+    .login-form {
+      max-width: 520px;
+      padding: 160px 30px 0;
+      margin: 0 auto;
 
-    button {
-      width: 100%;
-      margin-top: 16px;
+      button {
+        width: 100%;
+        margin-top: 16px;
+      }
+    }
+
+    .title {
+      font-size: 26px;
+      color: #eee;
+      margin-bottom: 40px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .el-input {
+      height: 40px;
+      font-size: 14px;
+
+      .el-icon {
+        font-size: 20px;
+      }
     }
   }
-
-  .title {
-    font-size: 26px;
-    color: #eee;
-    margin-bottom: 40px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .el-input {
-    height: 40px;
-    font-size: 14px;
-
-    .el-icon {
-      font-size: 20px;
-    }
-  }
-}
 </style>

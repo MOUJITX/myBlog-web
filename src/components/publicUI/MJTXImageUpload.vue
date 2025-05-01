@@ -1,82 +1,84 @@
 <script lang="ts" setup>
-import { ref, defineModel, defineProps, defineEmits } from 'vue';
-import { Delete, Plus } from '@element-plus/icons-vue';
-import { ResponseAPI } from '@/api/types';
-import { ElNotification } from 'element-plus';
-import { isMobile } from '@/utils/isMobile';
-import MJTXImageGridUpload from '@/components/publicUI/MJTXImageGridUpload.vue';
-import { imgToThumb } from '@/utils/imgToThumb';
+  import { ref, defineModel, defineProps, defineEmits } from 'vue';
+  import { Delete, Plus } from '@element-plus/icons-vue';
+  import { ResponseAPI } from '@/api/types';
+  import { ElNotification } from 'element-plus';
+  import { isMobile } from '@/utils/isMobile';
+  import MJTXImageGridUpload from '@/components/publicUI/MJTXImageGridUpload.vue';
+  import { imgToThumb } from '@/utils/imgToThumb';
 
-const token = localStorage.getItem('token');
-const fileUrl = defineModel<string | string[] | undefined>({ required: true });
+  const token = localStorage.getItem('token');
+  const fileUrl = defineModel<string | string[] | undefined>({
+    required: true,
+  });
 
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  isPicker: {
-    type: Boolean,
-    default: false,
-  },
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  limit: {
-    type: Number,
-  },
-});
+  const props = defineProps({
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    isPicker: {
+      type: Boolean,
+      default: false,
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    limit: {
+      type: Number,
+    },
+  });
 
-const filesUploadSuccess = (res: ResponseAPI) => {
-  if (res.code === 200) {
-    ElNotification.success({ title: '图片上传成功' });
+  const filesUploadSuccess = (res: ResponseAPI) => {
+    if (res.code === 200) {
+      ElNotification.success({ title: '图片上传成功' });
+      if (props.multiple) {
+        if (fileUrl.value && Array.isArray(fileUrl.value))
+          fileUrl.value.push(res.data.url);
+        else fileUrl.value = [res.data.url];
+      } else fileUrl.value = res.data.url;
+      dataEdit();
+    }
+  };
+
+  const filesRemove = (index: number | undefined) => {
+    if (index) {
+      if (fileUrl.value && Array.isArray(fileUrl.value))
+        fileUrl.value.splice(index, 1);
+    } else fileUrl.value = '';
+    dataEdit();
+  };
+
+  const formVisible = ref<boolean>(false);
+  const imagesList = ref<string[]>([]);
+  const dialogOpen = () => {
     if (props.multiple) {
       if (fileUrl.value && Array.isArray(fileUrl.value))
-        fileUrl.value.push(res.data.url);
-      else fileUrl.value = [res.data.url];
-    } else fileUrl.value = res.data.url;
+        imagesList.value = fileUrl.value;
+    } else {
+      if (fileUrl.value) {
+        if (Array.isArray(fileUrl.value)) imagesList.value = fileUrl.value;
+        else imagesList.value = [fileUrl.value];
+      } else imagesList.value = [];
+    }
+    formVisible.value = true;
+  };
+  const dialogConfirm = () => {
+    if (props.multiple) fileUrl.value = imagesList.value;
+    else fileUrl.value = imagesList.value[0];
+    formVisible.value = false;
     dataEdit();
-  }
-};
+  };
+  const dialogCancel = () => {
+    imagesList.value = [];
+    formVisible.value = false;
+  };
 
-const filesRemove = (index: number | undefined) => {
-  if (index) {
-    if (fileUrl.value && Array.isArray(fileUrl.value))
-      fileUrl.value.splice(index, 1);
-  } else fileUrl.value = '';
-  dataEdit();
-};
-
-const formVisible = ref<boolean>(false);
-const imagesList = ref<string[]>([]);
-const dialogOpen = () => {
-  if (props.multiple) {
-    if (fileUrl.value && Array.isArray(fileUrl.value))
-      imagesList.value = fileUrl.value;
-  } else {
-    if (fileUrl.value) {
-      if (Array.isArray(fileUrl.value)) imagesList.value = fileUrl.value;
-      else imagesList.value = [fileUrl.value];
-    } else imagesList.value = [];
-  }
-  formVisible.value = true;
-};
-const dialogConfirm = () => {
-  if (props.multiple) fileUrl.value = imagesList.value;
-  else fileUrl.value = imagesList.value[0];
-  formVisible.value = false;
-  dataEdit();
-};
-const dialogCancel = () => {
-  imagesList.value = [];
-  formVisible.value = false;
-};
-
-const emit = defineEmits(['change']);
-const dataEdit = () => {
-  emit('change');
-};
+  const emit = defineEmits(['change']);
+  const dataEdit = () => {
+    emit('change');
+  };
 </script>
 
 <template>
@@ -154,29 +156,29 @@ const dataEdit = () => {
 </template>
 
 <style scoped lang="scss">
-.mjtx-imageUpload-container {
-  width: fit-content;
-  display: flex;
-  flex-wrap: wrap;
-}
-.mjtx-imageUpload-view {
-  position: relative;
+  .mjtx-imageUpload-container {
+    width: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .mjtx-imageUpload-view {
+    position: relative;
 
-  &:hover {
+    &:hover {
+      .mjtx-imageUpload-delButton {
+        display: block;
+      }
+    }
+
     .mjtx-imageUpload-delButton {
-      display: block;
+      display: none;
+      position: absolute;
+      top: -10px;
+      left: 85px;
     }
   }
 
-  .mjtx-imageUpload-delButton {
-    display: none;
-    position: absolute;
-    top: -10px;
-    left: 85px;
+  .mjtx-imageUpload-padding {
+    padding: 0 20px 20px 0;
   }
-}
-
-.mjtx-imageUpload-padding {
-  padding: 0 20px 20px 0;
-}
 </style>

@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { defineProps, PropType } from 'vue';
-import { imgToThumb } from '@/utils/imgToThumb';
+  import { defineProps, PropType } from 'vue';
+  import { imgToThumb } from '@/utils/imgToThumb';
 
-const props = defineProps({
-  size: {
-    type: Number,
-    default: 48,
-  },
-  backgroundColor: {
-    type: String,
-    default: 'dodgerblue',
-  },
-  textColor: {
-    type: String,
-    default: 'white',
-  },
-  icon: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String as PropType<'circle' | 'round' | 'square'>,
-    default: 'round',
-  },
-  padding: {
-    type: Boolean,
-    default: false,
-  },
-});
+  const props = defineProps({
+    size: {
+      type: Number,
+      default: 48,
+    },
+    backgroundColor: {
+      type: String,
+      default: 'dodgerblue',
+    },
+    textColor: {
+      type: String,
+      default: 'white',
+    },
+    icon: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String as PropType<'circle' | 'round' | 'square'>,
+      default: 'round',
+    },
+    padding: {
+      type: Boolean,
+      default: false,
+    },
+  });
 
-const isText = !props.icon.startsWith('/files');
+  const isText = !props.icon.startsWith('/files');
 
-const paddingNum = props.padding ? 5 : 0;
+  const paddingNum = props.padding ? 5 : 0;
 </script>
 <template>
   <div
@@ -72,19 +72,19 @@ const paddingNum = props.padding ? 5 : 0;
 </template>
 
 <style scoped lang="scss">
-.mjtx-icon {
-  box-shadow: var(--box-shadow);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .mjtx-icon {
+    box-shadow: var(--box-shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  flex-shrink: 0;
+    flex-shrink: 0;
 
-  .mjtx-icon-img {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position-x: center;
-    background-position-y: center;
+    .mjtx-icon-img {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position-x: center;
+      background-position-y: center;
+    }
   }
-}
 </style>

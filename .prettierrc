@@ -3,5 +3,10 @@
   "arrowParens": "avoid",
   "trailingComma": "all",
   "bracketSameLine": true,
-  "bracketSpacing": true
+  "bracketSpacing": true,
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "vueIndentScriptAndStyle": true
 }

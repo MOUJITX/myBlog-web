@@ -1,27 +1,27 @@
 <script lang="ts" setup>
-import { Expand, Fold, Setting } from '@element-plus/icons-vue';
-import { ref } from 'vue';
-import router from '@/router';
-import { isMobile } from '@/utils/isMobile';
-import { onMounted } from 'vue';
-const isCollapse = ref(isMobile());
-const asideWidth = ['180px', '64px'];
-const logoText = ['MOUJITX', 'M'];
-const toolbarText = '网站后台';
+  import { Expand, Fold, Setting } from '@element-plus/icons-vue';
+  import { ref } from 'vue';
+  import router from '@/router';
+  import { isMobile } from '@/utils/isMobile';
+  import { onMounted } from 'vue';
+  const isCollapse = ref(isMobile());
+  const asideWidth = ['180px', '64px'];
+  const logoText = ['MOUJITX', 'M'];
+  const toolbarText = '网站后台';
 
-const nickname = localStorage.getItem('nickname');
-const token = localStorage.getItem('token');
+  const nickname = localStorage.getItem('nickname');
+  const token = localStorage.getItem('token');
 
-const logout = () => {
-  localStorage.clear();
-  router.push('/admin/login');
-};
-
-onMounted(() => {
-  if (!token) {
+  const logout = () => {
+    localStorage.clear();
     router.push('/admin/login');
-  }
-});
+  };
+
+  onMounted(() => {
+    if (!token) {
+      router.push('/admin/login');
+    }
+  });
 </script>
 
 <template>
@@ -121,67 +121,67 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.admin-layout-container {
-  height: 100vh;
-}
-.admin-layout-aside {
-  background-color: var(--admin-navbar-menu-background);
+  .admin-layout-container {
+    height: 100vh;
+  }
+  .admin-layout-aside {
+    background-color: var(--admin-navbar-menu-background);
 
-  .admin-layout-aside-logo {
-    height: 60px;
-    background-color: var(--admin-navbar-logo-background);
+    .admin-layout-aside-logo {
+      height: 60px;
+      background-color: var(--admin-navbar-logo-background);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        height: 50px;
+      }
+      span {
+        font-size: var(--font-size-large);
+        color: var(--admin-navbar-text-color);
+      }
+    }
+    .el-scrollbar {
+      height: calc(100% - 60px);
+    }
+  }
+
+  .admin-layout-toolbar {
     display: flex;
     align-items: center;
-    justify-content: center;
-    img {
-      height: 50px;
-    }
-    span {
-      font-size: var(--font-size-large);
-      color: var(--admin-navbar-text-color);
+    justify-content: space-between;
+    background: white;
+    box-shadow: var(--box-shadow);
+    .admin-layout-toolbar-dropdown {
+      font-size: var(--font-size-medium);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      div {
+        margin-left: 5px;
+      }
     }
   }
-  .el-scrollbar {
-    height: calc(100% - 60px);
+  .admin-layout-main {
+    padding: 0;
+    .el-scrollbar {
+      padding: 10px;
+      height: calc(100% - 20px);
+    }
   }
-}
 
-.admin-layout-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  box-shadow: var(--box-shadow);
-  .admin-layout-toolbar-dropdown {
-    font-size: var(--font-size-medium);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    div {
-      margin-left: 5px;
+  .el-menu {
+    border: 0;
+  }
+  .el-menu-item {
+    background-color: var(--admin-navbar-menu-background);
+    color: var(--admin-navbar-text-color);
+    &:hover {
+      background-color: var(--admin-navbar-menu-background-hover);
     }
   }
-}
-.admin-layout-main {
-  padding: 0;
-  .el-scrollbar {
-    padding: 10px;
-    height: calc(100% - 20px);
-  }
-}
-
-.el-menu {
-  border: 0;
-}
-.el-menu-item {
-  background-color: var(--admin-navbar-menu-background);
-  color: var(--admin-navbar-text-color);
-  &:hover {
+  .el-menu-item.is-active {
     background-color: var(--admin-navbar-menu-background-hover);
+    color: var(--admin-navbar-text-color-hover);
   }
-}
-.el-menu-item.is-active {
-  background-color: var(--admin-navbar-menu-background-hover);
-  color: var(--admin-navbar-text-color-hover);
-}
 </style>

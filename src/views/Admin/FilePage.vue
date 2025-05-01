@@ -1,49 +1,49 @@
 <script setup lang="ts">
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import { onMounted, ref } from 'vue';
-import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
-import { IFile } from '@/api/types';
-import { deleteFileAPI, deleteFilesAPI, getFilesPage } from '@/api/file';
-import { ElNotification } from 'element-plus';
-import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import { onMounted, ref } from 'vue';
+  import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import { IFile } from '@/api/types';
+  import { deleteFileAPI, deleteFilesAPI, getFilesPage } from '@/api/file';
+  import { ElNotification } from 'element-plus';
+  import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
 
-const tableData = ref<IFile[]>([]);
-const listQuery = ref({ currentPage: 1, pagesize: 10 });
-const total = ref(10);
+  const tableData = ref<IFile[]>([]);
+  const listQuery = ref({ currentPage: 1, pagesize: 10 });
+  const total = ref(10);
 
-const getDataList = () => {
-  getFilesPage(listQuery.value.currentPage, listQuery.value.pagesize).then(
-    res => {
-      if (!res) return;
-      tableData.value = res.data.list;
-      total.value = res.data.total;
-    },
-  );
-};
+  const getDataList = () => {
+    getFilesPage(listQuery.value.currentPage, listQuery.value.pagesize).then(
+      res => {
+        if (!res) return;
+        tableData.value = res.data.list;
+        total.value = res.data.total;
+      },
+    );
+  };
 
-const deleteSingle = (id: string) => {
-  deleteFileAPI(id).then(res => {
-    if (res) ElNotification.success({ title: res.data });
+  const deleteSingle = (id: string) => {
+    deleteFileAPI(id).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const deleteBatch = () => {
+    deleteFilesAPI(uuids.value).then(res => {
+      if (res) ElNotification.success({ title: res.data });
+      getDataList();
+    });
+  };
+
+  const uuids = ref<string[]>([]);
+  const tableRowSelect = (selected: IFile[]) => {
+    uuids.value = selected.map((item: IFile) => item.uuid);
+  };
+
+  onMounted(() => {
     getDataList();
+    uuids.value = [];
   });
-};
-
-const deleteBatch = () => {
-  deleteFilesAPI(uuids.value).then(res => {
-    if (res) ElNotification.success({ title: res.data });
-    getDataList();
-  });
-};
-
-const uuids = ref<string[]>([]);
-const tableRowSelect = (selected: IFile[]) => {
-  uuids.value = selected.map((item: IFile) => item.uuid);
-};
-
-onMounted(() => {
-  getDataList();
-  uuids.value = [];
-});
 </script>
 
 <template>

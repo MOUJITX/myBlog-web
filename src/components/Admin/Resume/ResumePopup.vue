@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
-import { defineProps, defineEmits, ref, PropType } from 'vue';
-import { Action } from '@/api/types';
-import ResumeForm from '@/components/Admin/Resume/ResumeForm.vue';
-const props = defineProps({
-  uuid: {
-    type: String,
-  },
-  action: {
-    type: String as PropType<'insert' | 'update' | 'copy'>,
-    required: true,
-  },
-});
+  import MJTXFormButton from '@/components/publicUI/MJTXFormButton.vue';
+  import { defineProps, defineEmits, ref, PropType } from 'vue';
+  import { Action } from '@/api/types';
+  import ResumeForm from '@/components/Admin/Resume/ResumeForm.vue';
+  const props = defineProps({
+    uuid: {
+      type: String,
+    },
+    action: {
+      type: String as PropType<'insert' | 'update' | 'copy'>,
+      required: true,
+    },
+  });
 
-const emit = defineEmits(['popup-close']);
+  const emit = defineEmits(['popup-close']);
 
-const popupVisible = ref(false);
-const handleClose = () => {
-  popupVisible.value = false;
-  emit('popup-close');
-};
+  const popupVisible = ref(false);
+  const handleClose = () => {
+    popupVisible.value = false;
+    emit('popup-close');
+  };
 </script>
 
 <template>

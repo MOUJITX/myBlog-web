@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import BannerBox from '@/components/Home/BannerBox.vue';
-import MJTXTimeLine from '@/components/publicUI/MJTXTimeLine.vue';
-import MJTXCard from '@/components/publicUI/MJTXCard.vue';
-import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
-import { IWebsiteNavigation } from '@/api/types';
-import { random } from 'lodash';
-import { defaultWebsiteNavigation } from '@/api/websiteSetting';
+  import BannerBox from '@/components/Home/BannerBox.vue';
+  import MJTXTimeLine from '@/components/publicUI/MJTXTimeLine.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
+  import MJTXTextLine from '@/components/publicUI/MJTXTextLine.vue';
+  import { IWebsiteNavigation } from '@/api/types';
+  import { random } from 'lodash';
+  import { defaultWebsiteNavigation } from '@/api/websiteSetting';
 
-const pageSetting: IWebsiteNavigation[] = JSON.parse(
-  localStorage.getItem('web_navigate') || '[]',
-);
-const pageSettingItem: IWebsiteNavigation = pageSetting.find(
-  item => item.nav_url === '/about',
-) || { ...defaultWebsiteNavigation };
-const rand = random(pageSettingItem.nav_banner.length - 1, false);
+  const pageSetting: IWebsiteNavigation[] = JSON.parse(
+    localStorage.getItem('web_navigate') || '[]',
+  );
+  const pageSettingItem: IWebsiteNavigation = pageSetting.find(
+    item => item.nav_url === '/about',
+  ) || {
+    ...defaultWebsiteNavigation,
+  };
+  const rand = random(pageSettingItem.nav_banner.length - 1, false);
 </script>
 
 <template>
@@ -46,17 +48,17 @@ const rand = random(pageSettingItem.nav_banner.length - 1, false);
 </template>
 
 <style scoped lang="scss">
-.about {
-  max-width: var(--max-width);
-  min-height: var(--min-height);
-  margin: 20px auto;
+  .about {
+    max-width: var(--max-width);
+    min-height: var(--min-height);
+    margin: 20px auto;
 
-  .about-textLine {
-    padding: 10px 0 0 30px;
-  }
+    .about-textLine {
+      padding: 10px 0 0 30px;
+    }
 
-  .mjtx-card {
-    margin-top: 20px;
+    .mjtx-card {
+      margin-top: 20px;
+    }
   }
-}
 </style>
