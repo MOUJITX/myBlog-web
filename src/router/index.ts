@@ -7,7 +7,7 @@ import ArchivePage from '@/views/Home/ArchivePage.vue';
 import ResumePage from '@/views/Home/ResumePage.vue';
 import PhotoPage from '@/views/Home/PhotoPage.vue';
 import PhotoListPage from '@/views/Home/PhotoListPage.vue';
-//import TestPage from "@/views/Home/TestPage.vue";
+// import TestPage from '@/views/Home/TestPage.vue';
 
 import HomeLayout from '@/views/Layout/HomeLayout.vue';
 import AdminLayout from '@/views/Layout/AdminLayout.vue';
@@ -40,9 +40,10 @@ const routes: Array<RouteRecordRaw> = [
       { path: 'resume', name: 'resume', component: ResumePage },
       { path: 'photo', name: 'photoList', component: PhotoListPage },
       { path: 'photo/:uuid', name: 'photo', component: PhotoPage },
-      // {path: 'test', name: 'test', component: TestPage},
+      // { path: 'test', name: 'test', component: TestPage },
       { path: 'list/:type/:title', name: 'list', component: ListPage },
       { path: 'search/:search', name: 'search', component: SearchPage },
+      { path: ':pathMatch(.*)*', name: 'empty', component: HomePage },
     ],
   },
   { path: '/admin/login', name: 'AdminLogin', component: LoginPage },

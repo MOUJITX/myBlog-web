@@ -27,7 +27,7 @@
 <template>
   <div
     class="banner-box"
-    :style="`background-image:url(${imgToThumb(props.bannerImage, 1920)})`">
+    :style="props.bannerImage && `background-image:url(${imgToThumb(props.bannerImage, 1920)})`">
     <div
       class="overlay"
       :style="{ 'backdrop-filter': `blur(${props.blur ? 5 : 0}px)` }">
@@ -77,6 +77,8 @@
     text-align: center;
 
     text-shadow: var(--text-shadow);
+
+    padding: 0 20px;
   }
   .article-title {
     height: var(--banner-height-page);
@@ -87,6 +89,8 @@
 
     margin: 0 auto;
     max-width: var(--max-width);
+
+    padding: 0 20px;
   }
   .page-title {
     width: 100%;

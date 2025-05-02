@@ -6,6 +6,7 @@
   import { useRoute } from 'vue-router';
   import { onMounted, ref } from 'vue';
   import { IPhoto } from '@/api/types';
+  import MJTXError from '@/components/publicUI/MJTXError.vue';
 
   const route = useRoute();
   const photoUUID = route.params.uuid as string;
@@ -13,7 +14,7 @@
   const photoData = ref<IPhoto>({ ...defaultPhoto });
   const getPhoto = () => {
     selectPhotoByID(photoUUID).then(res => {
-      if (!res) return;
+      if (!res || !res.data) return;
       photoData.value = res.data;
     });
   };
@@ -29,7 +30,7 @@
     :title="photoData.title"
     :sub-title="photoData.subtitle"
     :banner-image="photoData.index_img" />
-  <div class="photo">
+  <div class="photo" v-if="photoData.is_public">
     <div v-for="(photo, index) in photoData.images" :key="index">
       <MJTXTextLine
         v-if="photo.title"
@@ -42,10 +43,12 @@
           v-for="(images, index) in photo.images"
           :key="index"
           :photo="images"
+          :photo-list="photo.images"
           :is-menu="false" />
       </div>
     </div>
   </div>
+  <MJTXError v-else type="notFound" text="页面未找到"/>
 </template>
 
 <style scoped lang="scss">

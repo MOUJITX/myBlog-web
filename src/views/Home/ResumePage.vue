@@ -6,6 +6,7 @@
   import { IResumeSection, IWebsiteNavigation } from '@/api/types';
   import { getResumesPublic } from '@/api/resume';
   import { random } from 'lodash';
+  import { isMobile } from '@/utils/isMobile';
 
   const resumes = ref<IResumeSection[]>([]);
 
@@ -31,7 +32,7 @@
     <div
       v-for="(resume, index) in resumes"
       :key="index"
-      :style="{
+      :style="!isMobile() && {
         'min-width': resume.min_width + '%',
         'max-width': resume.max_width + '%',
       }">

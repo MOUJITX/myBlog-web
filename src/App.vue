@@ -85,7 +85,6 @@
 
     article {
       line-height: 2;
-      padding: 30px 50px;
       img {
         max-width: 100%;
         height: 100%;

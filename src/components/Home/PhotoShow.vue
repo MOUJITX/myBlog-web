@@ -8,6 +8,12 @@
       type: String,
       default: 'background.jpg',
     },
+    photoList: {
+      type: Array,
+      default() {
+        return ['background.jpg'];
+      },
+    },
     index: {
       type: Number,
       default: 0,
@@ -40,6 +46,10 @@
   const pointColor = ['FFFFFF00'];
   const isPoint = ref<boolean>(false);
   const preview = ref<boolean>(false);
+
+  const findPhotoIndexInPhotoList = () => {
+    return props.photoList.findIndex(item => item === props.photo);
+  };
 </script>
 
 <template>
@@ -58,7 +68,10 @@
     </router-link>
   </div>
   <div v-if="preview" class="photoPreview">
-    <el-image-viewer :url-list="[props.photo]" @close="preview = false" />
+    <el-image-viewer
+      :url-list="props.photoList as string[]"
+      :initialIndex="findPhotoIndexInPhotoList()"
+      @close="preview = false" />
   </div>
 </template>
 

@@ -27,7 +27,7 @@
       if (!res) return;
       articleData.value = res.data;
       articleMenu.value = extractTitles(res.data.full_content);
-      console.log(articleMenu.value);
+      // console.log(articleMenu.value);
       if (articleMenu.value.length === 0) showMenu.value = false;
     });
   };

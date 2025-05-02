@@ -21,13 +21,15 @@
     background-blur>
     <div class="article-isTop" v-if="props.article.is_top">TOP</div>
 
-    <div class="article-img" v-if="props.article.image_url">
+    <div class="article-img" v-if="props.article.image_url && !isMobile()">
       <img :src="imgToThumb(props.article.image_url, 640)" alt="img" />
     </div>
 
     <div
       class="article-info"
-      :style="{ width: props.article.image_url ? '70%' : '100%' }">
+      :style="{
+        width: props.article.image_url && !isMobile() ? '70%' : '100%',
+      }">
       <div class="article-top">
         <h2>
           <MJTXRouterLink
@@ -70,7 +72,7 @@
 
 <style scoped lang="scss">
   .article-card {
-    height: 210px;
+    height: 220px;
     margin-bottom: 20px;
     display: flex;
     overflow: hidden;
@@ -110,7 +112,7 @@
   }
 
   .article-top {
-    margin: 20px 40px 0 40px;
+    margin: 20px 20px 0 20px;
     h2 {
       height: 70px;
       display: flex;
@@ -142,7 +144,7 @@
   }
   .article-bottom {
     font-size: 14px;
-    margin: 20px 40px;
+    margin: 20px;
     bottom: 20px;
     display: flex;
     justify-content: space-between;

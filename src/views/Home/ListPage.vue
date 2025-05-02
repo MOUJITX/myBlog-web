@@ -9,6 +9,7 @@
   import { defaultCategory, selectCategoryByID } from '@/api/category';
   import { defaultSearchArticle, getArticlesList } from '@/api/article';
   import MJTXPagination from '@/components/publicUI/MJTXPagination.vue';
+  import MJTXError from '@/components/publicUI/MJTXError.vue';
   const route = useRoute();
   const pageType = route.params.type as string;
   const pageUUID = route.params.title as string;
@@ -65,7 +66,7 @@
     :banner-image="
       pageType === 'tag' ? tagInfo.banner_image : categoryInfo.banner_image
     " />
-  <div class="list">
+  <div class="list" v-if="dataList.length > 0">
     <ArticleCard
       v-for="(item, index) in dataList"
       :article="item"
@@ -78,6 +79,7 @@
       :total="total"
       @handleChange="getDataList()" />
   </div>
+  <MJTXError v-else type="empty" text="这里似乎空空如也，试试用关键词搜索吧" show-search/>
 </template>
 
 <style scoped lang="scss">

@@ -13,7 +13,7 @@ export const defaultPhoto: IPhoto = {
   subtitle: '',
   index_img: '',
   images: [],
-  is_public: true,
+  is_public: false,
   create_time: '',
   update_time: '',
 };
