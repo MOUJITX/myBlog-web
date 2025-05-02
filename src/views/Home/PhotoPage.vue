@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  <MJTXError v-else type="notFound" text="页面未找到"/>
+  <MJTXError v-else type="notFound" text="页面未找到" />
 </template>
 
 <style scoped lang="scss">

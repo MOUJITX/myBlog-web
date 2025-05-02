@@ -79,7 +79,11 @@
       :total="total"
       @handleChange="getDataList()" />
   </div>
-  <MJTXError v-else type="empty" text="这里似乎空空如也，试试用关键词搜索吧" show-search/>
+  <MJTXError
+    v-else
+    type="empty"
+    text="这里似乎空空如也，试试用关键词搜索吧"
+    show-search />
 </template>
 
 <style scoped lang="scss">

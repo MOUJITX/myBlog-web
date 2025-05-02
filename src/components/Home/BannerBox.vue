@@ -27,7 +27,10 @@
 <template>
   <div
     class="banner-box"
-    :style="props.bannerImage && `background-image:url(${imgToThumb(props.bannerImage, 1920)})`">
+    :style="
+      props.bannerImage &&
+      `background-image:url(${imgToThumb(props.bannerImage, 1920)})`
+    ">
     <div
       class="overlay"
       :style="{ 'backdrop-filter': `blur(${props.blur ? 5 : 0}px)` }">

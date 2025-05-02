@@ -32,10 +32,12 @@
     <div
       v-for="(resume, index) in resumes"
       :key="index"
-      :style="!isMobile() && {
-        'min-width': resume.min_width + '%',
-        'max-width': resume.max_width + '%',
-      }">
+      :style="
+        !isMobile() && {
+          'min-width': resume.min_width + '%',
+          'max-width': resume.max_width + '%',
+        }
+      ">
       <MJTXTextLine :text="resume.section" size="26px" />
       <div :class="resume.isrow ? 'resume-skill-apps' : ''">
         <InfoCard

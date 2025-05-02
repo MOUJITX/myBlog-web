@@ -3,6 +3,7 @@
   import { Search } from '@element-plus/icons-vue';
   import { ref } from 'vue';
   import router from '@/router';
+  import { isMobile } from '@/utils/isMobile';
 
   const searchInput = ref('');
 
@@ -21,6 +22,7 @@
     <input
       placeholder="Search something..."
       v-model="searchInput"
+      :class="isMobile() ? 'input input-mobile' : 'input input-normal'"
       @keyup.enter="handleSearch" />
     <Search @Click="handleSearch" />
   </div>
@@ -36,24 +38,30 @@
       padding-left: 5px;
     }
 
-    input {
-      width: 0;
-      visibility: hidden;
-      height: 30px;
-      background-color: #f1f2f3;
-      border: 1px solid #e3e5e7;
-      border-radius: 10px;
-      opacity: 0.8;
-      padding: 0;
-    }
-
     &:hover {
       cursor: pointer;
-      input {
+      .input-normal {
         visibility: visible;
         width: 300px;
         padding: 0 10px;
       }
     }
+  }
+
+  .input {
+    width: 0;
+    visibility: hidden;
+    height: 30px;
+    background-color: #f1f2f3;
+    border: 1px solid #e3e5e7;
+    border-radius: 10px;
+    opacity: 0.8;
+    padding: 0;
+  }
+
+  .input-mobile {
+    visibility: visible;
+    width: 300px;
+    padding: 0 10px;
   }
 </style>
