@@ -17,10 +17,11 @@
 
 <template>
   <div class="mjtx-error">
-    <div :class="`mjtx-error-svg mjtx-error-${props.type}`"></div>
+    <div :class="`mjtx-error-svg mjtx-error-${props.type}`" v-if="props.type"></div>
     <div class="mjtx-error-text">
       <div>{{ props.text }}</div>
       <ArticleSearch v-if="props.showSearch" />
+      <slot />
     </div>
   </div>
 </template>

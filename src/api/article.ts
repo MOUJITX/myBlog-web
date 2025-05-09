@@ -88,8 +88,8 @@ export const deleteArticleAPI = (id: string) =>
 export const deleteArticlesAPI = (ids: string[]) =>
   request.delete('/article/del/batch', { data: ids });
 
-export const getArticleByUUID = (id: string) =>
-  request.get(`/article/selectById/${id}`);
+export const getArticleByUUID = (id: string, viewCode?: string) =>
+  request.get(viewCode ? `/article/${id}?viewCode=${viewCode}` : `/article/${id}`);
 
 export const uploadImageByURL = (urlPath: string) =>
   request.get(`/files/upload/imageURL?url=${urlPath}`);

@@ -14,6 +14,7 @@
   import MJTXInline from '@/components/publicUI/MJTXInline.vue';
   import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
   import MJTXError from '@/components/publicUI/MJTXError.vue';
+  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
 
   const route = useRoute();
   const articleUUID = route.params.uuid as string;
@@ -22,9 +23,21 @@
   const articleMenu = ref<IArticleMenu[]>([]);
   const showMenu = ref(true);
 
+  const needViewCode = ref<boolean>(false);
+  const viewCode = ref<string>();
+  const viewCodeTip = ref<string>();
+
   const getDate = () => {
-    getArticleByUUID(articleUUID).then(res => {
+    getArticleByUUID(articleUUID, viewCode.value).then(res => {
       if (!res) return;
+
+      if (!res.data) {
+        needViewCode.value = true;
+        viewCodeTip.value = res.msg;
+        return;
+      }
+
+      needViewCode.value = false;
       articleData.value = res.data;
       articleMenu.value = extractTitles(res.data.full_content);
       // console.log(articleMenu.value);
@@ -79,7 +92,7 @@
       </MJTXInline>
     </div>
   </BannerBox>
-  <div class="article" v-if="articleData.is_public">
+  <div class="article" v-if="articleData.is_public && !needViewCode">
     <div :style="`width:${showMenu && !isMobile() ? '70%' : '100%'}`">
       <ArticleContent :html="articleData.full_content!" />
       <ArticleComment v-if="articleData.is_comment && func_comment" />
@@ -88,6 +101,10 @@
       <ArticleMenu :menu="articleMenu" />
     </MJTXAffix>
   </div>
+  <MJTXError v-if="needViewCode" :text="viewCodeTip">
+    <input v-model="viewCode" @keyup.enter="getDate()" type="password" autocomplete="false"/>
+    <button @click="getDate()">查看</button>
+  </MJTXError>
   <MJTXError text="页面未找到" type="notFound" v-else />
 </template>
 

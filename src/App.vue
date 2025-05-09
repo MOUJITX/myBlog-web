@@ -73,6 +73,7 @@
     a {
       text-decoration: none;
       color: inherit;
+      text-align: justify;
     }
 
     tbody {
