@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.2.1-beta.0](https://gitee.com/moujitx/com.moujitx.myBlog.web/compare/v0.2.0...v0.2.1-beta.0) (2025-05-09)
+
 # [0.2.0](https://gitee.com/moujitx/com.moujitx.myBlog.web/compare/v0.2.0-beta.0...v0.2.0) (2025-05-02)
 
 # [0.2.0-beta.0](https://gitee.com/moujitx/com.moujitx.myBlog.web/compare/v0.1.3-beta.3...v0.2.0-beta.0) (2025-05-01)
