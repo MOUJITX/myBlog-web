@@ -30,9 +30,10 @@
     getArticleByUUID(articleUUID, viewCode.value).then(res => {
       if (!res) return;
 
-      if (!res.data) {
+      if (res.data.is_private) {
         needViewCode.value = true;
-        viewCodeTip.value = res.msg;
+        viewCodeTip.value = res.data.full_content;
+        articleData.value = res.data;
         return;
       }
 
@@ -72,7 +73,8 @@
           <MJTXTag :tag="item" size="14px" round before theme="none" shadow />
         </router-link>
       </MJTXInline>
-      <h1 class="article-banner_title">{{ articleData.title }}</h1>
+      <h3 class="article-banner_title" v-if="isMobile()">{{ articleData.title }}</h3>
+      <h1 class="article-banner_title" v-else>{{ articleData.title }}</h1>
       <MJTXInline position="center">
         <div class="article-banner_icon article-banner_author"></div>
         <MJTXTag
@@ -100,11 +102,11 @@
       <ArticleMenu :menu="articleMenu" />
     </MJTXAffix>
   </div>
-  <MJTXError v-if="needViewCode" :text="viewCodeTip">
+  <MJTXError v-else-if="needViewCode" :text="viewCodeTip" class="article-viewCode">
     <input v-model="viewCode" @keyup.enter="getDate()" type="password" autocomplete="false"/>
-    <button @click="getDate()">查看</button>
+    <button @click="getDate()">确 认</button>
   </MJTXError>
-  <MJTXError text="页面未找到" type="notFound" v-else />
+  <MJTXError text="页面未找到" type="notFound" v-else/>
 </template>
 
 <style scoped lang="scss">
@@ -145,5 +147,33 @@
     padding-top: 10px;
     padding-bottom: 20px;
     text-shadow: var(--text-shadow);
+
+    word-break: break-all;
+    hyphens: auto;
+  }
+
+  .article-viewCode {
+
+    input {
+      height: 30px;
+      border: 1px solid #acaaaa;
+      border-radius: 10px;
+      width: 300px;
+      padding: 0 10px;
+      text-align: center;
+    }
+
+    button {
+      height: 30px;
+      border: 1px solid #acaaaa;
+      border-radius: 10px;
+      width: 100px;
+      text-align: center;
+
+      &:hover {
+        background: #dddddd;
+        cursor: pointer;
+      }
+    }
   }
 </style>

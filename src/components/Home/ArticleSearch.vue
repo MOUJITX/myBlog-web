@@ -53,7 +53,7 @@
     visibility: hidden;
     height: 30px;
     background-color: #f1f2f3;
-    border: 1px solid #e3e5e7;
+    border: 1px solid #acaaaa;
     border-radius: 10px;
     opacity: 0.8;
     padding: 0;
