@@ -14,7 +14,6 @@
   import MJTXInline from '@/components/publicUI/MJTXInline.vue';
   import MJTXRouterLink from '@/components/publicUI/MJTXRouterLink.vue';
   import MJTXError from '@/components/publicUI/MJTXError.vue';
-  import MJTXCard from '@/components/publicUI/MJTXCard.vue';
 
   const route = useRoute();
   const articleUUID = route.params.uuid as string;
