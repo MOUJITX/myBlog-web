@@ -106,7 +106,7 @@
     <input v-model="viewCode" @keyup.enter="getDate()" type="password" autocomplete="false"/>
     <button @click="getDate()">确 认</button>
   </MJTXError>
-  <MJTXError text="页面未找到" type="notFound" v-else/>
+  <MJTXError :text="articleData.full_content" type="notFound" show-search v-else/>
 </template>
 
 <style scoped lang="scss">
