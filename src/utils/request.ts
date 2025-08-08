@@ -10,7 +10,8 @@ const service = axios.create({
 // Request interceptors
 service.interceptors.request.use(
   config => {
-    config.headers['Content-Type'] = 'application/json;charset=utf-8';
+    // console.warn('config', config);
+    // config.headers['Content-Type'] = 'application/json;charset=utf-8';
     if (localStorage.getItem('token')) {
       config.headers['token'] = localStorage.getItem('token');
     }

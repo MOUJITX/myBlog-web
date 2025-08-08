@@ -36,7 +36,7 @@
   import 'tinymce/plugins/link'; //超链接
   import 'tinymce/plugins/lists'; //列表插件
   // import '/public/static/tinymce/plugins/letterspacing' //字间距
-  // import 'tinymce/plugins/media' //插入编辑媒体
+// import 'tinymce/plugins/media' //插入编辑媒体
   import 'tinymce/plugins/nonbreaking'; //插入不间断空格
   import 'tinymce/plugins/pagebreak'; //分页
   // import 'tinymce/plugins/paste' //粘贴设置
@@ -46,10 +46,12 @@
   import 'tinymce/plugins/searchreplace'; //查找替换
   import 'tinymce/plugins/table'; //表格
   // //import 'tinymce/plugins/toc'  //目录生成器
-  // import '/public/static/tinymce/plugins/upfile' //文件上传
   import 'tinymce/plugins/visualblocks'; //显示块元素范围
-  import 'tinymce/plugins/wordcount';
-  import { uploadImageByURL } from '@/api/article'; // 字数统计
+  import 'tinymce/plugins/wordcount'; // 字数统计
+  import { uploadImageByURL } from '@/api/article'; 
+import request from '@/utils/request';
+
+const token = localStorage.getItem('token') || '';
 
   const externalPlugins = {
     // 引入自定义的插件
@@ -60,6 +62,8 @@
     axupimgs: '/tinymce/plugins/axupimgs/index.js',
     indent2em: '/tinymce/plugins/indent2em/plugin.js',
     toc: '/tinymce/plugins/menu/index.js',
+    // upfile: '/tinymce/plugins/upfile/plugin.js',
+    attachment:'/tinymce/plugins/attachment/plugin.js',
   };
 
   const props = defineProps({
@@ -108,11 +112,23 @@
   const plugins_normal =
     'toc anchor pasteImage indent2em axupimgs save accordion lists advlist quickbars autolink link autosave charmap wordcount code codesample directionality emoticons fullscreen image imagetools importcss insertdatetime nonbreaking pagebreak preview searchreplace table visualblocks formatpainter kityformula-editor';
 
-  const toolbar_normal = `undo redo code pastetext formatpainter removeformat | forecolor backcolor styles blocks fontfamily fontsize bold italic underline strikethrough lineheight indent2em | alignleft alignright aligncenter alignjustify
-  outdent indent ltr rtl | bullist numlist | blockquote subscript superscript  | link table image axupimgs charmap emoticons hr pagebreak insertdatetime | codesample kityformula-editor
-  | print preview fullscreen | wordcount nonbreaking searchreplace visualblocks custom-btn Accordion anchor toc`;
+const toolbar_normal =
+'attachment | '+
+  'undo redo code pastetext formatpainter removeformat | ' +
+  'blocks fontfamily fontsize | ' +
+  'forecolor backcolor bold italic underline strikethrough  | ' +
+  'alignleft alignright aligncenter alignjustify |' +
+  'lineheight indent2em outdent indent | ' +
+  'bullist numlist | ' +
+  'blockquote subscript superscript | ' +
+  'link table image axupimgs charmap emoticons hr pagebreak insertdatetime | ' +
+  'codesample kityformula-editor | ' +
+  'print preview fullscreen | ' +
+  'wordcount nonbreaking searchreplace visualblocks custom-btn Accordion anchor toc'
 
-  const toolbar_mini = `removeformat | forecolor backcolor fontfamily fontsize bold italic underline strikethrough lineheight indent2em
+const toolbar_mini = `removeformat
+  | fontfamily fontsize
+  | forecolor backcolor bold italic underline strikethrough lineheight indent2em
   | alignleft alignright aligncenter alignjustify
   | subscript superscript
   | link image axupimgs charmap emoticons hr kityformula-editor`;
@@ -126,8 +142,7 @@
     '仿宋=仿宋,FangSong; 楷体=楷体,KaiTi; 新宋体=新宋体,NSimSun; ' +
     'Andale Mono=andale mono,times; ' +
     'Arial=arial,helvetica,sans-serif; ' +
-    1;
-  'Arial Black=arial black,avant garde; ' +
+    'Arial Black=arial black,avant garde; ' +
     'Book Antiqua=book antiqua,palatino; ' +
     'Comic Sans MS=comic sans ms,sans-serif; ' +
     'Courier New=courier new,courier; ' +
@@ -142,6 +157,52 @@
     'Verdana=verdana,geneva; ' +
     'Webdings=webdings; ' +
     'Wingdings=wingdings,zapf dingbats';
+
+const text_patterns = [
+  { start: '*', end: '*', format: 'italic' },
+  { start: '**', end: '**', format: 'bold' },
+  { start: '#', format: 'h1' },
+  { start: '##', format: 'h2' },
+  { start: '###', format: 'h3' },
+  { start: '####', format: 'h4' },
+  { start: '#####', format: 'h5' },
+  { start: '######', format: 'h6' },
+
+  { start: '`', end: '`', format: 'code' },
+  
+  { start: '*', cmd: 'InsertUnorderedList' },
+  { start: '-', cmd: 'InsertUnorderedList' },
+  { start: '1.', cmd: 'InsertOrderedList' },
+  { start: '1)', cmd: 'InsertOrderedList', value: { 'list-style-type': 'decimal' } },
+  { start: 'a.', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-alpha' } },
+  { start: 'a)', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-alpha' } },
+  { start: 'i.', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-roman' } },
+  { start: 'i)', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-roman' } },
+
+  { start: '---', replacement: '<hr/>' },
+
+  { start: '->', replacement: '→' },
+  { start: '-》', replacement: '→' },
+  { start: '<-', replacement: '←' },
+  { start: '《-', replacement: '←' },
+  { start: '<->', replacement: '↔' },
+  { start: '《-》', replacement: '↔' },
+  { start: '<--->', replacement: '⟷' },
+  { start: '《---》', replacement: '⟷' },
+
+  { start: '=>', replacement: '⇒' },
+  { start: '<=', replacement: '⇐' },
+  { start: '<=>', replacement: '⇔' },
+
+  { start: '==>', replacement: '⟹' },
+  { start: '<==', replacement: '⟸' },
+  
+  { start: '<<', replacement: '«' },
+  { start: '>>', replacement: '»' },
+
+  { start: '!!', replacement: '‼️' },
+  { start: '！！', replacement: '‼️' },
+]
 
   const tinymceScriptSrc = '/tinymce/tinymce.js';
   const init = {
@@ -161,7 +222,7 @@
 
     toolbar: props.size === 'normal' ? toolbar_normal : toolbar_mini,
     toolbar_location: '/',
-    toolbar_mode: 'wrap', // 工具栏模式: floating sliding scrolling wrap
+    toolbar_mode: 'sliding', // 工具栏模式: floating sliding scrolling wrap
     toolbar_sticky: true,
 
     font_size_formats: fontSize,
@@ -181,7 +242,9 @@
       a: 'background', // 链接禁用背景样式
     },
 
-    autosave_ask_before_unload: false, //当关闭或跳转URL时，弹出提示框提醒用户仍未保存变更内容
+    text_patterns: text_patterns, // 自定义文本模式
+
+    autosave_ask_before_unload: true, //当关闭或跳转URL时，弹出提示框提醒用户仍未保存变更内容
     autosave_interval: '10s', //自动保存的时间间隔
     autosave_prefix: 'EditorAutoSave-{path}{query}-{id}-', //自动保存的文件名前缀
     autosave_restore_when_empty: true, //编辑器在初始化时为空时，自动还原存储在本地存储中的内容
@@ -200,7 +263,7 @@
       [0x2601, 'cloud'],
     ], //特殊字符自定义
     imagetools_cors_hosts: ['zjweu.edu.cn', 'csdn.net'],
-    imagetools_proxy: `/api/files/upload/image?token=${localStorage.getItem('token')}`,
+    imagetools_proxy: `/api/files/upload/image?token=${token}`,
     images_upload_base_path: '/',
 
     content_style: 'p {margin: 5px 0;} img {max-width:100%;}',
@@ -223,18 +286,19 @@
 
     automatic_uploads: true, // 禁止图片自动上传
 
-    imagetools_toolbar: 'rotateleft rotateright flipv fliph imageoptions', //editimage暂不可用
+    imagetools_toolbar: 'rotateleft rotateright flipv fliph imageoptions ', //editimage暂不可用
 
     // 此处为自定义图片上传处理函数
     images_upload_handler: (blobInfo: any) =>
       new Promise((resolve: any, reject: any) => {
+        console.warn('blobInfo', blobInfo);
         var xhr: XMLHttpRequest, formData;
         var file = blobInfo.blob(); //转化为易于理解的file对象
         xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
         xhr.open(
           'POST',
-          `/api/files/upload/image?token=${localStorage.getItem('token')}`,
+          `/api/files/upload/image?token=${token}`,
         );
         xhr.onload = function () {
           var json;
@@ -276,7 +340,7 @@
       xhr.withCredentials = false;
       xhr.open(
         'POST',
-        `/api/files/upload/image?token=${localStorage.getItem('token')}`,
+        `/api/files/upload/image?token=${token}`,
       );
       xhr.onload = function () {
         var json;
@@ -350,6 +414,21 @@
       { title: 'medium', value: '3px' },
       { title: 'large', value: '5px' },
     ],
+
+    attachment_max_size: 100 * 1024 * 1024, // 100M
+    attachment_icons_path: '/tinymce/plugins/attachment/icons', 
+    attachment_upload_handler: function (file: File, successCallback: any, failureCallback: any, progressCallback: any) {
+      const formData = new FormData();
+      formData.append('file', file, file.name);
+      request.post('/files/oss/upload', formData, {onUploadProgress(e) {
+                const progress = (e.total ? (e.loaded / e.total * 100) : 0 )+ '%';
+                progressCallback(progress);
+      }}).then((response) => {
+            successCallback(response.data.url);
+        }).catch((error) => {
+            failureCallback(`上传失败:${error.message}`)
+        })
+    },
   };
   // 组件挂载完毕
   onMounted(() => {
